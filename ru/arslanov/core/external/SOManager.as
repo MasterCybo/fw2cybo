@@ -14,7 +14,7 @@ package ru.arslanov.core.external {
 			
 		}
 		
-		static public function init( name:String = "settings", localPath:String = null, secure:Boolean = false ):void {
+		static public function customInit( name:String = "settings", localPath:String = null, secure:Boolean = false ):void {
 			if ( _inited ) return;
 			
 			name = !name || (name.length == 0) ? "settings" : name;
@@ -30,6 +30,8 @@ package ru.arslanov.core.external {
 		}
 		
 		static public function setVar( varName:String, value:* ):void {
+			customInit();
+			
 			_so.data[varName] = value;
 			
 			try {
@@ -40,22 +42,23 @@ package ru.arslanov.core.external {
 		}
 		
 		static public function getVar( varName:String, defaultValue:* = null ):* {
+			customInit();
+			
 			var value:* = _so.data[varName];
 			return value ? value : defaultValue;
 		}
 		
 		static public function getString( varName:String, defaultValue:String = "" ):String {
-			var value:String = String( _so.data[varName] );
-			return value ? value : defaultValue;
+			return String( getVar( varName, defaultValue ) );
 		}
 		
 		static public function getNumber( varName:String, defaultValue:Number = 0 ):Number {
-			var value:Number = Number( _so.data[varName] );
+			var value:Number = Number( getVar( varName, defaultValue ) );
 			return isNaN( value ) ? defaultValue : value;
 		}
 		
 		static public function getBoolean( varName:String, defaultValue:Boolean = false ):Boolean {
-			return _so.data[varName] != undefined ? Boolean( _so.data[varName] ) : defaultValue;
+			return Boolean( getVar( varName, defaultValue ) );
 		}
 		
 		static public function getData():Object {
