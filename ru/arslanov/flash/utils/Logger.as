@@ -6,6 +6,7 @@ package ru.arslanov.flash.utils {
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.text.TextFormat;
+	import ru.arslanov.core.external.SOManager;
 	import ru.arslanov.flash.display.ASprite;
 	import ru.arslanov.flash.text.ATextField;
 	
@@ -68,6 +69,12 @@ package ru.arslanov.flash.utils {
 			Display.stageAddEventListener( MouseEvent.MIDDLE_CLICK, hrMiddleClick );
 			Display.root.addEventListener( TouchEvent.TOUCH_END, hrTouchEnd );
 			Display.root.addEventListener( TouchEvent.TOUCH_TAP, hrTouchTap );
+			
+			var isVis:Boolean = SOManager.getBoolean( "loggerView" );
+			
+			if ( isVis ) {
+				visible = true;
+			}
 		}
 		
 		static private function onClickEdit( ev:MouseEvent ):void {
@@ -103,8 +110,7 @@ package ru.arslanov.flash.utils {
 			}
 			
 			if ( ev.shiftKey ) {
-				toTop();
-				_body.visible = _btnEdit.visible = !_body.visible;
+				visible = !visible;
 			}
 		}
 		
@@ -171,14 +177,15 @@ package ru.arslanov.flash.utils {
 			toTop();
 		}
 		
-		static public function show():void {
-			toTop();
-			_body.visible = _btnEdit.visible = true;
+		static public function set visible( value:Boolean ):void {
+			if ( value ) toTop();
+			_body.visible = _btnEdit.visible = value;
+			
+			SOManager.setVar( "loggerView", value );
 		}
 		
-		static public function hide():void {
-			toTop();
-			_body.visible = _btnEdit.visible = false;
+		static public function get visible():Boolean {
+			return _body.visible;
 		}
 		
 		static private function traceHelp():void {
