@@ -33,6 +33,7 @@ package ru.arslanov.core.controllers {
 		private var _speed:Point = new Point();
 		private var _pressed:Point = new Point();
 		private var _released:Point = new Point();
+		private var _positionOnStage:Point = new Point();
 		
 		public function MouseController( target:InteractiveObject, targetUp : InteractiveObject = null, targetMove : InteractiveObject = null, targetWheel : InteractiveObject = null ) {
 			_target = target;
@@ -121,6 +122,8 @@ package ru.arslanov.core.controllers {
 		}
 		
 		private function onMouseMove( ev : MouseEvent ) : void {
+			_positionOnStage.setTo( ev.stageX, ev.stageY );
+			
 			_movement.x = ev.stageX - _prevX;
 			_movement.y = ev.stageY - _prevY;
 			
@@ -154,6 +157,10 @@ package ru.arslanov.core.controllers {
 		
 		public function get released():Point {
 			return _released;
+		}
+		
+		public function get positionOnStage():Point {
+			return _positionOnStage;
 		}
 		
 		public function dispose() : void {
