@@ -1,5 +1,6 @@
 package ru.arslanov.core.controllers {
 	import flash.display.InteractiveObject;
+	import flash.display.Stage;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -46,7 +47,9 @@ package ru.arslanov.core.controllers {
 			_target.addEventListener( MouseEvent.MOUSE_DOWN, onMouseDown );
 			_targetWheel.addEventListener( MouseEvent.MOUSE_WHEEL, onMouseWheel );
 			
-			_target.mouseEnabled = true;
+			if ( !(_target is Stage) ) {
+				_target.mouseEnabled = true;
+			}
 			
 			super();
 		}

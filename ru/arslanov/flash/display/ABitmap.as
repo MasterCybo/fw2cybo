@@ -63,9 +63,9 @@ package ru.arslanov.flash.display {
 		
 		/**
 		 * Делает снимок с целевого объекта.
-		 * Пример : Bitmap.fromDisplayObject( cont, null, { matrix:mtx, smoothing:true } ).init();
+		 * Пример : ABitmap.fromDisplayObject( cont, null, { matrix:mtx, smoothing:true } ).init();
 		 * @param	object - целевой объект, с которого будет снят снимок
-		 * @param	paramsBitmapData - объект c параметрами для экземпляра BitmapData( ..., transparent:Boolean = true, fillColor:uint = 0x00FF0000 );
+		 * @param	paramsBitmapData - объект c параметрами для экземпляра BitmapData( ..., transparent:Boolean = false, fillColor:uint = uint.MAX_VALUE );
 		 *
 		 * @param	paramsDraw - объект c параметрами метода BitmapData.draw( ..., matrix:Matrix = null, colorTransform:flash.geom:ColorTransform = null
 		 * 																		, blendMode:String (flash.display.BlendMode) = null, clipRect:Rectangle = null, smoothing:Boolean = false );
@@ -82,8 +82,8 @@ package ru.arslanov.flash.display {
 			
 			
 			// BitmapData
-			var transparent		:Boolean 	= ( paramsBitmapData && paramsBitmapData["transparent"] ) ? paramsBitmapData["transparent"] : true;
-			var fillColor		:uint 		= ( paramsBitmapData && paramsBitmapData["fillColor"] ) ? paramsBitmapData["fillColor"] : 0x00FF0000;
+			var transparent		:Boolean 	= ( paramsBitmapData && paramsBitmapData["transparent"] ) ? paramsBitmapData["transparent"] : false;
+			var fillColor		:uint 		= ( paramsBitmapData && paramsBitmapData["fillColor"] ) ? paramsBitmapData["fillColor"] : uint.MAX_VALUE;
 			
 			
 			// BitmapData.draw
