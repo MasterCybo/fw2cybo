@@ -52,9 +52,10 @@ package ru.arslanov.core.utils {
 		 * @param	date
 		 * @return	JDN:Number
 		 */
-		static public function dateToJDN( year:int, month:uint, date:uint ):Number {
+		static public function dateToJDN( year:int, month:uint = 0, date:uint = 0 ):Number {
 			if ( year == 0 ) year = 1; // Нулевого года не существует, сразу после 1 г. до н.э. идёт 1 г. н.э.
 			if ( month < 1 ) month = 1; // Исправляем нулевой месяц
+			if (date < 1) date = 1; // Исправляем нулевое число
 			
 			var a:Number = Math.floor(( 14 - month ) / 12 );
 			var y:Number = year + 4800 - a;
@@ -94,7 +95,7 @@ package ru.arslanov.core.utils {
 		 * @param	seconds
 		 * @return	JD:Number
 		 */
-		static public function dateToJD( year:int, month:uint, date:uint, hours:uint = 12, minutes:uint = 0, seconds:uint = 0 ):Number {
+		static public function dateToJD( year:int, month:uint = 0, date:uint = 0, hours:uint = 12, minutes:uint = 0, seconds:uint = 0 ):Number {
 			var jd:Number = dateToJDN( year, month, date ) + (( hours - 12 ) / 24 ) + ( minutes / 1440 ) + ( seconds / 86400 );
 			
 			return jd;

@@ -31,6 +31,7 @@ package ru.arslanov.flash.utils {
 		static private var _clipboard:Clipboard;
 		static private var _count:uint;
 		static private var _btnEdit:ASprite;
+		static private var _btnSide:ASprite;
 		
 		static public function init( container:DisplayObjectContainer, position:String = "right" ):void {
 			_container = container;
@@ -52,13 +53,22 @@ package ru.arslanov.flash.utils {
 			_btnEdit.graphics.endFill();
 			_btnEdit.eventManager.addEventListener( MouseEvent.CLICK, onClickEdit );
 			
+			_btnSide = new ASprite().init();
+			_btnSide.mouseEnabled = true;
+			_btnSide.buttonMode = true;
+			_btnSide.graphics.beginFill( 0x80FF00 );
+			_btnSide.graphics.drawRect( 0, 0, 10, 10 );
+			_btnSide.graphics.endFill();
+			_btnSide.eventManager.addEventListener( MouseEvent.CLICK, onClickSide );
+			
 			_body.addChild( _bg );
 			_body.addChild( _tf );
 			
-			_body.visible = _btnEdit.visible = false;
+			_body.visible = _btnEdit.visible = _btnSide.visible = false;
 			
 			_container.addChild( _body );
 			_container.addChild( _btnEdit );
+			_container.addChild( _btnSide );
 			
 			updateSize();
 			
@@ -75,6 +85,16 @@ package ru.arslanov.flash.utils {
 			if ( isVis ) {
 				visible = true;
 			}
+		}
+		
+		static private function onClickSide( ev:MouseEvent ):void {
+			if ( _position == POSITION_RIGHT ) {
+				_position = POSITION_LEFT;
+			} else {
+				_position = POSITION_RIGHT;
+			}
+			
+			updateSize();
 		}
 		
 		static private function onClickEdit( ev:MouseEvent ):void {
@@ -160,6 +180,9 @@ package ru.arslanov.flash.utils {
 			
 			_btnEdit.x = _bg.x + _bg.width - 5 - _btnEdit.width;
 			_btnEdit.y = _bg.y + 5;
+			
+			_btnSide.x = _btnEdit.x - _btnSide.width - 5;
+			_btnSide.y = _btnEdit.y;
 		}
 		
 		static public function traceMessage( message:* ):void {
@@ -179,7 +202,7 @@ package ru.arslanov.flash.utils {
 		
 		static public function set visible( value:Boolean ):void {
 			if ( value ) toTop();
-			_body.visible = _btnEdit.visible = value;
+			_body.visible = _btnEdit.visible = _btnSide.visible = value;
 			
 			SOManager.setVar( "loggerView", value );
 		}
@@ -198,6 +221,7 @@ package ru.arslanov.flash.utils {
 		static private function toTop():void {
 			_container.setChildIndex( _body, _container.numChildren - 1 );
 			_container.setChildIndex( _btnEdit, _container.numChildren - 1 );
+			_container.setChildIndex( _btnSide, _container.numChildren - 1 );
 		}
 	}
 
