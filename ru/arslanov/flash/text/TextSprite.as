@@ -1,4 +1,4 @@
-package ru.arslanov.flash.display {
+package ru.arslanov.flash.text {
 	import flash.text.TextFormat;
 	/**
 	 * ...

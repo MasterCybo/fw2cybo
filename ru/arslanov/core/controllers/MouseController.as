@@ -1,10 +1,12 @@
 package ru.arslanov.core.controllers {
 	import flash.display.InteractiveObject;
 	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
-	import flash.utils.getTimer;
+	import ru.arslanov.core.events.EventManager;
+	import ru.arslanov.core.events.MouseControllerEvent;
 	import ru.arslanov.flash.utils.Display;
 	
 	/**
@@ -13,30 +15,23 @@ package ru.arslanov.core.controllers {
 	 */
 	public class MouseController extends EventDispatcher {
 		
-		public var handlerDown : Function;
-		public var handlerDrag : Function;
-		public var handlerUp : Function;
-		public var handlerWheel : Function;
-		public var handlerOver : Function;
-		public var handlerOut : Function;
+		private var _target:InteractiveObject;
+		private var _targetUp:InteractiveObject;
+		private var _targetMove:InteractiveObject;
+		private var _targetWheel:InteractiveObject;
 		
-		private var _target : InteractiveObject;
-		private var _targetUp : InteractiveObject;
-		private var _targetMove : InteractiveObject;
-		private var _targetWheel : InteractiveObject;
+		private var _prevX:Number = 0;
+		private var _prevY:Number = 0;
 		
-		private var _prevX : Number = 0;
-		private var _prevY : Number = 0;
-		private var _time : int;
-		
-		private var _wheelDelta:Number = 0;
+		private var _deltaWheel:Number = 0;
 		private var _movement:Point = new Point();
-		private var _speed:Point = new Point();
 		private var _pressed:Point = new Point();
 		private var _released:Point = new Point();
-		private var _positionOnStage:Point = new Point();
+		private var _globalPosition:Point = new Point();
 		
-		public function MouseController( target:InteractiveObject, targetUp : InteractiveObject = null, targetMove : InteractiveObject = null, targetWheel : InteractiveObject = null ) {
+		protected var _eventManager:EventManager = new EventManager();
+		
+		public function MouseController( target:InteractiveObject, targetUp:InteractiveObject = null, targetMove:InteractiveObject = null, targetWheel:InteractiveObject = null ) {
 			_target = target;
 			_targetUp = targetUp ? targetUp : Display.stage;
 			_targetMove = targetMove ? targetMove : Display.stage;
@@ -47,85 +42,64 @@ package ru.arslanov.core.controllers {
 			_target.addEventListener( MouseEvent.MOUSE_DOWN, onMouseDown );
 			_targetWheel.addEventListener( MouseEvent.MOUSE_WHEEL, onMouseWheel );
 			
-			if ( !(_target is Stage) ) {
+			if ( !( _target is Stage ) ) {
 				_target.mouseEnabled = true;
 			}
 			
 			super();
 		}
 		
-		private function onMouseOver( ev : MouseEvent ) : void {
-			if ( handlerOver != null ) {
-				if ( handlerOver.length ) {
-					handlerOver( ev );
-				} else {
-					handlerOver();
-				}
-			}
+		override public function addEventListener( type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false ):void {
+			_eventManager.addEventListener( type, listener, useCapture, priority, useWeakReference );
 		}
 		
-		private function onMouseOut( ev : MouseEvent ) : void {
-			if ( handlerOut != null ) {
-				if ( handlerOut.length ) {
-					handlerOut( ev );
-				} else {
-					handlerOut();
-				}
-			}
+		override public function removeEventListener( type:String, listener:Function, useCapture:Boolean = false ):void {
+			_eventManager.removeEventListener( type, listener, useCapture );
 		}
 		
-		private function onMouseDown( ev : MouseEvent ) : void {
+		override public function dispatchEvent( event:Event ):Boolean {
+			return _eventManager.dispatchEvent( event );
+		}
+		
+		protected function onMouseOver( ev:MouseEvent ):void {
+			_eventManager.dispatchEvent( new MouseControllerEvent( MouseControllerEvent.MOUSE_OVER ) );
+		}
+		
+		protected function onMouseOut( ev:MouseEvent ):void {
+			_eventManager.dispatchEvent( new MouseControllerEvent( MouseControllerEvent.MOUSE_OUT ) );
+		}
+		
+		protected function onMouseDown( ev:MouseEvent ):void {
 			_pressed.setTo( _target.mouseX, _target.mouseY );
 			
 			_prevX = ev.stageX;
 			_prevY = ev.stageY;
 			
-			_time = getTimer();
-			
-			if ( handlerDown != null ) {
-				if ( handlerDown.length ) {
-					handlerDown( ev );
-				} else {
-					handlerDown();
-				}
-				
-			}
+			_eventManager.dispatchEvent( new MouseControllerEvent( MouseControllerEvent.MOUSE_DOWN ) );
 			
 			_targetUp.addEventListener( MouseEvent.MOUSE_UP, onMouseUp );
 			_targetMove.addEventListener( MouseEvent.MOUSE_MOVE, onMouseMove );
 		}
 		
-		private function onMouseUp( ev : MouseEvent ) : void {
-			_time = getTimer() - _time;
-			
+		protected function onMouseUp( ev:MouseEvent ):void {
 			_released.setTo( _targetUp.mouseX, _targetUp.mouseY );
 			
-			if ( handlerUp != null ) {
-				if ( handlerUp.length ) {
-					handlerUp( ev );
-				} else {
-					handlerUp();
-				}
-			}
+			_eventManager.dispatchEvent( new MouseControllerEvent( MouseControllerEvent.MOUSE_UP ) );
 			
 			_targetUp.removeEventListener( MouseEvent.MOUSE_UP, onMouseUp );
 			_targetMove.removeEventListener( MouseEvent.MOUSE_MOVE, onMouseMove );
 		}
 		
-		private function onMouseWheel( ev : MouseEvent ) : void {
-			_wheelDelta = ev.delta;
+		protected function onMouseWheel( ev:MouseEvent ):void {
+			_deltaWheel = ev.delta;
 			
-			if ( handlerWheel != null ) {
-				if ( handlerWheel.length ) {
-					handlerWheel( ev );
-				} else {
-					handlerWheel();
-				}
-			}
+			_eventManager.dispatchEvent( new MouseControllerEvent( MouseControllerEvent.MOUSE_WHEEL ) );
+			
+			_deltaWheel = 0;
 		}
 		
-		private function onMouseMove( ev : MouseEvent ) : void {
-			_positionOnStage.setTo( ev.stageX, ev.stageY );
+		protected function onMouseMove( ev:MouseEvent ):void {
+			_globalPosition.setTo( ev.stageX, ev.stageY );
 			
 			_movement.x = ev.stageX - _prevX;
 			_movement.y = ev.stageY - _prevY;
@@ -133,25 +107,15 @@ package ru.arslanov.core.controllers {
 			_prevX = ev.stageX;
 			_prevY = ev.stageY;
 			
-			if ( handlerDrag != null ) {
-				if ( handlerDrag.length ) {
-					handlerDrag( ev );
-				} else {
-					handlerDrag();
-				}
-			}
+			_eventManager.dispatchEvent( new MouseControllerEvent( MouseControllerEvent.MOUSE_MOVE ) );
 		}
 		
-		public function get wheelDelta():Number {
-			return _wheelDelta;
+		public function get deltaWheel():Number {
+			return _deltaWheel;
 		}
 		
 		public function get movement():Point {
 			return _movement;
-		}
-		
-		public function get speed():Point {
-			return _speed;
 		}
 		
 		public function get pressed():Point {
@@ -162,17 +126,17 @@ package ru.arslanov.core.controllers {
 			return _released;
 		}
 		
-		public function get positionOnStage():Point {
-			return _positionOnStage;
+		public function get globalPosition():Point {
+			return _globalPosition;
 		}
 		
-		public function dispose() : void {
-			handlerDown = null;
-			handlerDrag = null;
-			handlerUp = null;
-			handlerWheel = null;
-			handlerOver = null;
-			handlerOut = null;
+		public function get target():InteractiveObject {
+			return _target;
+		}
+		
+		public function dispose():void {
+			_eventManager.dispose();
+			_eventManager = null;
 			
 			_target.removeEventListener( MouseEvent.MOUSE_OVER, onMouseOver );
 			_target.removeEventListener( MouseEvent.MOUSE_OUT, onMouseOut );
@@ -186,7 +150,6 @@ package ru.arslanov.core.controllers {
 			_targetMove = null;
 			_targetWheel = null;
 			_movement = null;
-			_speed = null;
 			_pressed = null;
 			_released = null;
 		}

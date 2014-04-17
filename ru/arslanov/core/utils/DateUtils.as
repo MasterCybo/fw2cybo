@@ -142,14 +142,32 @@ package ru.arslanov.core.utils {
 			return { year:year, month:month, date:date, weekday:weekday, hours:hours, minutes:minutes, seconds:seconds };
 		}
 		
-		static public function getMonthName( numMonth:uint ):String {
-			//trace( "*execute* DateUtils.getMonthName" );
+		static public function getNameMonth( numMonth:uint ):String {
+			//trace( "*execute* DateUtils.getNameMonth" );
 			//trace( "num : " + num );
 			return monthsLocale[ Math.max( 0, numMonth - 1 ) ];
 		}
 		
-		static public function getDayName( num:uint ):String {
+		static public function getNameWeekday( num:uint ):String {
 			return weekdaysLocale[( 6 + num ) % 7 ];
+		}
+		
+		/**
+		* Форматирование даты
+		* @param jd
+		* @param formatString - шаблон строки {0}-год, {1}-месяц, {2}-число, {3}-день недели, {4}-час, {5}-минута
+		* @return
+		*/
+		static public function getFormatString( jd:Number, formatString:String ):String {
+			var date:Object = JDToDate( jd );
+			
+			return StringUtils.substitute( formatString
+										, date.year // {0}
+										, getNameMonth( date.month ) // {1}
+										, StringUtils.numberToString( date.date ) // {2}
+										, getNameWeekday(date.weekday) // {3}
+										, StringUtils.numberToString( date.hours ) // {4}
+										, StringUtils.numberToString( date.minutes ) ); // {5}
 		}
 	}
 

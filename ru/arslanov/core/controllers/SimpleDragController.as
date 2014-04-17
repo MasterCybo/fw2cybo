@@ -1,40 +1,36 @@
 package ru.arslanov.core.controllers {
 	import flash.display.InteractiveObject;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import ru.arslanov.core.events.MouseControllerEvent;
 	
 	/**
-	* ...
-	* @author Artem Arslanov
-	*/
-	public class SimpleDragController {
-		public var onDrag:Function;
-		
-		private var _mctrl:MouseController;
-		private var _target:InteractiveObject;
+	 * ...
+	 * @author Artem Arslanov
+	 */
+	public class SimpleDragController extends MouseController {
 		private var _dragArea:Rectangle;
 		private var _checkBounds:Boolean;
 		private var _position:Point = new Point();
 		private var _tbounds:Rectangle;
 		
-		public function SimpleDragController() {
-			
-		}
-		
-		public function init( target:InteractiveObject, checkBounds:Boolean = false ):void {
-			_target = target;
+		public function SimpleDragController( target:InteractiveObject, checkBounds:Boolean = false ) {
 			_checkBounds = checkBounds;
 			
-			_mctrl = new MouseController( target );
-			_mctrl.handlerDrag = onDragMouse;
+			super( target );
+		}
+		
+		override protected function onMouseMove( ev:MouseEvent ):void {
+			super.onMouseMove( ev );
+			
+			onDragMouse();
 		}
 		
 		private function onDragMouse():void {
-			setPosition( _target.x + _mctrl.movement.x, _target.y + _mctrl.movement.y );
+			setPosition( super.target.x + super.movement.x, super.target.y + super.movement.y );
 			
-			if ( onDrag != null ) {
-				onDrag();
-			}
+			_eventManager.dispatchEvent( new MouseControllerEvent( MouseControllerEvent.MOUSE_DRAG ) );
 		}
 		
 		public function get dragArea():Rectangle {
@@ -42,8 +38,10 @@ package ru.arslanov.core.controllers {
 		}
 		
 		public function set dragArea( value:Rectangle ):void {
-			if (!value) return;
-			if ( _dragArea && _dragArea.equals( value ) ) return;
+			if ( !value )
+				return;
+			if ( _dragArea && _dragArea.equals( value ) )
+				return;
 			
 			_dragArea = value;
 		}
@@ -53,7 +51,7 @@ package ru.arslanov.core.controllers {
 		}
 		
 		public function setPosition( newX:Number, newY:Number ):void {
-			_tbounds = _target.getBounds( _target.parent );
+			_tbounds = super.target.getBounds( super.target.parent );
 			_tbounds.x = newX;
 			_tbounds.y = newY;
 			
@@ -72,26 +70,23 @@ package ru.arslanov.core.controllers {
 				top = bottom = _tbounds.y + _tbounds.height * 0.5;
 			}
 			
-			if ( (left >= _dragArea.left) && (right <= _dragArea.right) ) {
-				_target.x = _tbounds.x;
+			if ( _dragArea ) {
+				if (( left >= _dragArea.left ) && ( right <= _dragArea.right ) ) {
+					super.target.x = _tbounds.x;
+				}
+				
+				if (( top >= _dragArea.top ) && ( bottom <= _dragArea.bottom ) ) {
+					super.target.y = _tbounds.y;
+				}
 			}
 			
-			if ( (top >= _dragArea.top) && (bottom <= _dragArea.bottom) ) {
-				_target.y = _tbounds.y;
-			}
-			
-			_position.setTo( _target.x, _target.y );
+			_position.setTo( super.target.x, super.target.y );
 		}
 		
-		public function get target():InteractiveObject {
-			return _target;
-		}
-		
-		public function dispose():void {
-			onDrag = null;
-			_target = null;
+		override public function dispose():void {
 			_dragArea = null;
-			_mctrl.dispose();
+			
+			super.dispose();
 		}
 	}
 

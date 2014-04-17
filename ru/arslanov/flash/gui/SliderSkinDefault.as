@@ -1,4 +1,4 @@
-package ru.arslanov.core.gui {
+package ru.arslanov.flash.gui {
 	import ru.arslanov.flash.display.ASprite;
 	/**
 	 * ...

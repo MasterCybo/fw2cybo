@@ -5,6 +5,7 @@ package ru.arslanov.flash.gui {
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import ru.arslanov.core.controllers.MouseController;
+	import ru.arslanov.core.events.MouseControllerEvent;
 	import ru.arslanov.core.utils.Calc;
 	import ru.arslanov.core.utils.Log;
 	import ru.arslanov.flash.display.ASprite;
@@ -47,8 +48,8 @@ package ru.arslanov.flash.gui {
 			_scroller.addChild( _thumb as DisplayObject );
 			
 			_msc = new MouseController( _thumb as InteractiveObject, null, null, this );
-			_msc.handlerDrag = onMouseMove;
-			_msc.handlerWheel = onMouseWheel;
+			_msc.addEventListener( MouseControllerEvent.MOUSE_MOVE, onMouseMove );
+			_msc.addEventListener( MouseControllerEvent.MOUSE_WHEEL, onMouseWheel );
 			
 			// Контент может вещать событие Event.CHANGE, по которому произойдёт обновление скроллера
 			eventManager.addEventListener( Event.CHANGE, hrContentChange );
@@ -79,7 +80,7 @@ package ru.arslanov.flash.gui {
 			updateVisible();
 		}
 		
-		private function onMouseMove( ev:MouseEvent ):void {
+		private function onMouseMove( ev:MouseControllerEvent ):void {
 			_thumb.y = Math.round( Math.min( Math.max( 0, _thumb.y + _msc.movement.y ), _viewPort.height - _thumb.height ) );
 			
 			if ( !_viewPort )
@@ -88,8 +89,8 @@ package ru.arslanov.flash.gui {
 			position = _thumb.y / ( _viewPort.height - _thumb.height );
 		}
 		
-		private function onMouseWheel():void {
-			position -= Calc.sign( _msc.wheelDelta ) * 0.05;
+		private function onMouseWheel( ev:MouseControllerEvent ):void {
+			position -= Calc.sign( _msc.deltaWheel ) * 0.05;
 		}
 		
 		/***************************************************************************
