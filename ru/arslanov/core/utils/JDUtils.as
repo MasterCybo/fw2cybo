@@ -1,12 +1,13 @@
 package ru.arslanov.core.utils {
 	
 	/**
-	 * ...
+	 * Класс для работы с Юлианским календарём. Формула справедлива для дат после 23 ноября −4713 г.
 	 * @author Artem Arslanov
 	 */
-	public class DateUtils {
+	public class JDUtils {
 		
-		static public const MIN_YEAR:int = -4712;
+		static public const MIN_YEAR:int = -4713; // 
+		static public const DAYS_PER_YEAR:Number = 365.25; // Количество дней в году
 		
 		static public var weekdaysLocale:Array = [ "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье" ];
 		static public var monthsLocale:Array = [ "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря" ];
@@ -158,7 +159,7 @@ package ru.arslanov.core.utils {
 		* @param formatString - шаблон строки {0}-год, {1}-месяц, {2}-число, {3}-день недели, {4}-час, {5}-минута
 		* @return
 		*/
-		static public function getFormatString( jd:Number, formatString:String ):String {
+		static public function getFormatString( jd:Number, formatString:String = "{2} {1} {0}, {4}:{5}" ):String { // –
 			var date:Object = JDToDate( jd );
 			
 			return StringUtils.substitute( formatString
@@ -168,6 +169,26 @@ package ru.arslanov.core.utils {
 										, getNameWeekday(date.weekday) // {3}
 										, StringUtils.numberToString( date.hours ) // {4}
 										, StringUtils.numberToString( date.minutes ) ); // {5}
+		}
+		
+		/**
+		* Разница между двумя юлианскими датами в ЮЛИАНСКИХ ДНЯХ
+		* @param jd1
+		* @param jd2
+		* @return
+		*/
+		static public function diffDays( jd1:Number, jd2:Number ):Number {
+			return jd2 - jd1;
+		}
+		
+		/**
+		* Разница между двумя юлианскими датами в ГОДАХ
+		* @param jd1
+		* @param jd2
+		* @return
+		*/
+		static public function diffYears( jd1:Number, jd2:Number ):Number {
+			return ( jd2 - jd1 ) / 365.25;
 		}
 	}
 
