@@ -85,6 +85,8 @@ package ru.arslanov.flash.display {
 			var transparent		:Boolean 	= ( paramsBitmapData && paramsBitmapData["transparent"] ) ? paramsBitmapData["transparent"] : false;
 			var fillColor		:uint 		= ( paramsBitmapData && paramsBitmapData["fillColor"] ) ? paramsBitmapData["fillColor"] : uint.MAX_VALUE;
 			
+			if ( transparent ) fillColor = 0x00ff0000;
+			
 			
 			// BitmapData.draw
 			var matrix			:Matrix 		= ( paramsDraw && paramsDraw["matrix"] ) ? paramsDraw["matrix"] : null;
@@ -109,7 +111,7 @@ package ru.arslanov.flash.display {
 			
 			var bd:BitmapData = new BitmapData( ww, hh, transparent, fillColor );
 			bd.draw( object, matrix, colorTransform, blendMode, clipRect, bdSmoothing );
-			
+
 			var rect:Rectangle = bd.getColorBoundsRect( fillColor, fillColor, false );
 			
 			var bd2:BitmapData = new BitmapData( rect.width, rect.height, transparent, fillColor );
