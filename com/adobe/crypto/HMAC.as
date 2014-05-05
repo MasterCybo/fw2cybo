@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.crypto {
+package fw2cybo.com.adobe.crypto {
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 	import flash.utils.describeType;
@@ -84,7 +84,7 @@ package com.adobe.crypto {
 				algorithm = MD5;
 			}
 			
-			if ( describeType(algorithm).@name.toString() == "com.adobe.crypto::MD5" ) {
+			if ( describeType(algorithm).@name.toString() == "fw2cybo.com.adobe.crypto::MD5" ) {
 				endian = Endian.LITTLE_ENDIAN;
 			}
 			

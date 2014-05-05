@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.utils
+package fw2cybo.com.adobe.utils
 {
 
 	public class XMLUtil

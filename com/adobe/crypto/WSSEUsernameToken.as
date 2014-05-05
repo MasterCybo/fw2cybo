@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.crypto
+package fw2cybo.com.adobe.crypto
 {
 	import mx.formatters.DateFormatter;
 	import mx.utils.Base64Encoder;

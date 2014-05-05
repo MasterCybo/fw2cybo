@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.air.filesystem.events
+package fw2cybo.com.adobe.air.filesystem.events
 {
 	import flash.events.Event;
 	import flash.filesystem.File;

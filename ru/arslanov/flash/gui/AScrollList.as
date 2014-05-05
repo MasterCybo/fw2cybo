@@ -1,5 +1,5 @@
 package ru.arslanov.flash.gui {
-	import com.adobe.protocols.dict.events.DisconnectedEvent;
+	import fw2cybo.com.adobe.protocols.dict.events.DisconnectedEvent;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
