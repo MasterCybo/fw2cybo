@@ -2,9 +2,9 @@ package ru.arslanov.flash.gui {
 	import flash.display.DisplayObject;
 	import flash.text.TextFormat;
 	import ru.arslanov.flash.display.ASprite;
-	import ru.arslanov.flash.display.ATextField;
 	import ru.arslanov.flash.interfaces.IKillable;
-	
+	import ru.arslanov.flash.text.ATextField;
+
 	/**
 	 * ...
 	 * @author Artem Arslanov

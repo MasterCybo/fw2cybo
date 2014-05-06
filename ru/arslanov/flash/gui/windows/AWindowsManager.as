@@ -82,7 +82,7 @@ package ru.arslanov.flash.gui.windows {
 			_container.addChild( window );
 		}
 		
-		public function removeWindow( name:String ):void {
+		public function removeWindow( name:String, killMethod:Boolean = true ):void {
 			if ( !_windowNames[ name ] ) {
 				Log.traceWarn( "AWindowsManager.removeWindow( " + name + " ) doesn't exist!" );
 				return;
@@ -93,6 +93,10 @@ package ru.arslanov.flash.gui.windows {
 			
 			delete _windowNames[ name ];
 			_windows.splice( _windows.indexOf( window ), 1 );
+
+			if ( killMethod ) {
+				window.kill();
+			}
 		}
 		
 		public function removeAllWindows():void {

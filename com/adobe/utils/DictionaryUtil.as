@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package fw2cybo.com.adobe.utils
+package com.adobe.utils
 {
 	import flash.utils.Dictionary;
 	
