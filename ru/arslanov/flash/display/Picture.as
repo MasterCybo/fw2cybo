@@ -10,15 +10,25 @@ package ru.arslanov.flash.display
 	import ru.arslanov.core.events.LoaderEvent;
 	import ru.arslanov.core.load.DisplayLoader;
 
+	/**
+	 * Класс отображения BitmapData с возможностью загрузки изображения из внешнего хранилища или использования встраиваемого ресурса.
+	 * Все BitmapData помещаются в кэш для повторного использования.
+	 */
 	public class Picture extends ABitmap
 	{
 		static private var _cache:Dictionary /*BitmapData*/ = new Dictionary( true ); // id = BitmapData
 
+		/**
+		 * Очищает кэш изображений
+		 */
 		public static function clearCache():void
 		{
 			_cache = new Dictionary( true );
 		}
 
+		/**
+		 * Полная очистка кэша, с высвобождением памяти с помощью метода dispose
+		 */
 		public static function disposeCacheBitmapData():void
 		{
 			for each ( var bd:BitmapData in _cache ) {
@@ -32,24 +42,25 @@ package ru.arslanov.flash.display
 		private var _width:uint = 0;
 		private var _height:uint = 0;
 
-		public function Picture( width:uint = 0, height:uint = 0 )
+		public function Picture( bitmapData:BitmapData = null, width:uint = 0, height:uint = 0 )
 		{
 			_width = width;
 			_height = height;
-			super();
-		}
 
-		override public function init():*
-		{
-			return super.init();
+			super( bitmapData );
 		}
 
 		/**
-		 * Отображает данные BitmapData
+		 * Отображает данные BitmapData и изменяет конечный размер изображения
 		 * @param bitmapData
+		 * @param width - если =0, то предыдущее значение _width не перезаписывается
+		 * @param height - если =0, то предыдущее значение _height не перезаписывается
 		 */
-		public function attach( bitmapData:BitmapData ):void
+		public function drawAndResize( bitmapData:BitmapData, width:uint = 0, height:uint = 0 ):void
 		{
+			_width = width > 0 ? width : _width;
+			_height = height > 0 ? height : _height;
+
 			var ww:int;
 			var hh:int;
 
@@ -85,17 +96,17 @@ package ru.arslanov.flash.display
 		}
 
 		/**
-		 * Создание изображения из внедрённой картинки
+		 * Создание изображения из внедрённой ресурса
 		 * @param embedClass
 		 */
-		public function attachFromEmbed( embedClass:Class ):void
+		public function drawFromEmbed( embedClass:Class ):void
 		{
 			var bd:BitmapData = _cache[embedClass];
 
 			if ( bd ) {
-				attach( bd );
+				drawAndResize( bd );
 			} else {
-				attach( ABitmap.fromClass( embedClass ).bitmapData );
+				drawAndResize( ABitmap.fromClass( embedClass ).bitmapData );
 			}
 		}
 
@@ -108,7 +119,7 @@ package ru.arslanov.flash.display
 			var bd:BitmapData = _cache[url];
 
 			if ( bd ) {
-				attach( bd );
+				drawAndResize( bd );
 			} else {
 				var loader:DisplayLoader = new DisplayLoader( url );
 				loader.addEventListener( LoaderEvent.COMPLETE, onLoadComplete );
@@ -118,7 +129,7 @@ package ru.arslanov.flash.display
 
 		private function onLoadComplete( event:LoaderEvent ):void
 		{
-			attach( (event.target as DisplayLoader).getBitmapData() );
+			drawAndResize( (event.target as DisplayLoader).getBitmapData() );
 		}
 	}
 }
