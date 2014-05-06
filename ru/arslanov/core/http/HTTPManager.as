@@ -10,14 +10,12 @@ package ru.arslanov.core.http {
 	import flash.utils.Dictionary;
 	import ru.arslanov.core.utils.Log;
 	/**
-	 * Сервис отправки и получения запросов на сервер посредством HTTP-запросов
+	 * ...
 	 * @author Artem Arslanov
 	 */
-	public class WEBService {
-
-		public static var verbose:Boolean = true; // (verbose = многословный) Разрешение протоколировать работу сервиса
-
-		private var _serverURL:String = "";
+	public class HTTPManager {
+		
+		private var _domain:String = "";
 		private var _queue:Vector.<HTTPRequest> = new Vector.<HTTPRequest>();
 		private var _dataRequests:Dictionary/*URLLoader:DataRequest*/ = new Dictionary( true );
 		
@@ -25,28 +23,36 @@ package ru.arslanov.core.http {
 		private var _callbackCheckServer:Function;
 		
 		
-		public function WEBService( serverURL:String = null ) {
-			_serverURL = serverURL;
-
-			_serverIsAvailable = (serverURL != null) && (serverURL != "") && (( new LocalConnection() ).domain != "localhost");
+		public function HTTPManager( domain:String = null ) {
+			//_domain = domain ? domain : ( new LocalConnection() ).domain;
+			_domain = domain;
 			
-//			Log.traceText( "_serverIsAvailable : " + _serverIsAvailable );
-//			Log.traceText( "Create WEBService : " + _serverURL );
+			//Log.traceText( "LocalConnection.domain : " + ( new LocalConnection() ).domain );
+			//Log.traceText( "domain : _" + domain + "_" );
+			//Log.traceText( "domain == '' : " + (domain == "") );
+			//Log.traceText( "domain == null : " + (domain == null) );
+			
+			_serverIsAvailable = (domain != null) && (domain != "") && (( new LocalConnection() ).domain != "localhost");
+			
+			Log.traceText( "_serverIsAvailable : " + _serverIsAvailable );
+			Log.traceText( "Create HTTPManager : " + _domain );
 		}
-
-		/**
-		 * Проверка доступности сервера
-		 */
+		
+		/***************************************************************************
+		Проверка доступности сервера
+		***************************************************************************/
+		//{ region
 		public function get serverIsAvailable():Boolean {
 			return _serverIsAvailable;
 		}
-
+		//} endregion
+		
 		public function get isOnline():Boolean {
-			return ( serverURL != "localhost" ) && ( serverURL.search( "app#" ) == -1 );
+			return ( domain != "localhost" ) && ( domain.search( "app#" ) == -1 );
 		}
 		
-		public function get serverURL():String {
-			return _serverURL;
+		public function get domain():String {
+			return _domain;
 		}
 		
 		public function addRequest( request:HTTPRequest, callbackSuccessful:Function = null, callbackError:Function = null ):void {
@@ -63,7 +69,7 @@ package ru.arslanov.core.http {
 			var httpRequest:HTTPRequest = dataRequest.httpRequest;
 			
 			var req:URLRequest = new URLRequest();
-//			Log.traceText( "req.requestHeaders : " + req.requestHeaders );
+			Log.traceText( "req.requestHeaders : " + req.requestHeaders );
 			//req.requestHeaders.push( new URLRequestHeader( "Cache-Control", "no-store, must-revalidate, max-age=0" ) );
 			req.requestHeaders.push( new URLRequestHeader( "Cache-Control", "no-store" ) );
 			req.requestHeaders.push( new URLRequestHeader( "Pragma", "no-cache") );
@@ -71,7 +77,7 @@ package ru.arslanov.core.http {
 			if ( !serverIsAvailable ) {
 				req.url = httpRequest.altURL;
 			} else {
-				req.url = _serverURL + httpRequest.url;
+				req.url = _domain + httpRequest.url;
 				req.method = httpRequest.method;
 				if ( httpRequest.vars ) {
 					req.data = httpRequest.vars;
