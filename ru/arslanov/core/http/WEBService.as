@@ -13,59 +13,57 @@ package ru.arslanov.core.http {
 	 * ...
 	 * @author Artem Arslanov
 	 */
-	public class HTTPManager {
+	public class WEBService {
 		
-		private var _domain:String = "";
-		private var _queue:Vector.<HTTPRequest> = new Vector.<HTTPRequest>();
+		private var _queue:Vector.<DataRequest> = new Vector.<DataRequest>();
 		private var _dataRequests:Dictionary/*URLLoader:DataRequest*/ = new Dictionary( true );
 		
-		private var _serverIsAvailable:Boolean;
-		private var _callbackCheckServer:Function;
-		
-		
-		public function HTTPManager( domain:String = null ) {
-			//_domain = domain ? domain : ( new LocalConnection() ).domain;
-			_domain = domain;
-			
-			//Log.traceText( "LocalConnection.domain : " + ( new LocalConnection() ).domain );
-			//Log.traceText( "domain : _" + domain + "_" );
-			//Log.traceText( "domain == '' : " + (domain == "") );
-			//Log.traceText( "domain == null : " + (domain == null) );
-			
-			_serverIsAvailable = (domain != null) && (domain != "") && (( new LocalConnection() ).domain != "localhost");
-			
-			Log.traceText( "_serverIsAvailable : " + _serverIsAvailable );
-			Log.traceText( "Create HTTPManager : " + _domain );
+		public function WEBService() {
+
 		}
 		
 		/***************************************************************************
 		Проверка доступности сервера
 		***************************************************************************/
-		//{ region
-		public function get serverIsAvailable():Boolean {
-			return _serverIsAvailable;
-		}
-		//} endregion
-		
 		public function get isOnline():Boolean {
-			return ( domain != "localhost" ) && ( domain.search( "app#" ) == -1 );
+			return ( new LocalConnection() ).domain.search( "app#" ) == -1;
 		}
-		
-		public function get domain():String {
-			return _domain;
-		}
-		
+
+		/**
+		 * Добавляет новый запрос в очередь
+		 * @param request
+		 * @param callbackSuccessful
+		 * @param callbackError
+		 */
 		public function addRequest( request:HTTPRequest, callbackSuccessful:Function = null, callbackError:Function = null ):void {
-			send( new DataRequest( request, callbackSuccessful, callbackError ) );
+			pushToQueue( new DataRequest( request, callbackSuccessful, callbackError ) );
+			trySend();
 		}
-		
-		private function send( dataRequest:DataRequest ):void {
+
+		/**
+		 * Помещаем объект данных запроса в очередь
+		 * @param dataRequest
+		 */
+		private function pushToQueue( dataRequest:DataRequest ):void
+		{
+			_queue.push( dataRequest );
+		}
+
+		/**
+		 * Пробуем отправить запрос
+		 * @param dataRequest
+		 */
+		private function trySend():void {
+			if( !_queue.length ) return;
+
+			var dataRequest:DataRequest = _queue.shift();
+
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener( SecurityErrorEvent.SECURITY_ERROR, onSecurityError );
 			loader.addEventListener( HTTPStatusEvent.HTTP_STATUS, onHTTPStatus );
 			loader.addEventListener( IOErrorEvent.IO_ERROR, onIOError );
 			loader.addEventListener( Event.COMPLETE, onComplete );
-			
+
 			var httpRequest:HTTPRequest = dataRequest.httpRequest;
 			
 			var req:URLRequest = new URLRequest();
@@ -74,36 +72,80 @@ package ru.arslanov.core.http {
 			req.requestHeaders.push( new URLRequestHeader( "Cache-Control", "no-store" ) );
 			req.requestHeaders.push( new URLRequestHeader( "Pragma", "no-cache") );
 			
-			if ( !serverIsAvailable ) {
-				req.url = httpRequest.altURL;
-			} else {
-				req.url = _domain + httpRequest.url;
-				req.method = httpRequest.method;
-				if ( httpRequest.vars ) {
-					req.data = httpRequest.vars;
-				}
+			req.url = httpRequest.url;
+			req.method = httpRequest.method;
+			if ( httpRequest.vars ) {
+				req.data = httpRequest.vars;
 			}
-			
+
 			Log.traceNetSend( "Send " + httpRequest + " : " + req.url + ( httpRequest.vars == null ? "" : "?" + unescape( httpRequest.vars.toString() ) ) );
 			
 			_dataRequests[loader] = dataRequest;
 			
 			loader.load( req );
 		}
+
+		private function trySendAlternative():void {
+			if( !_queue.length ) return;
+
+			var dataRequest:DataRequest = _queue.shift();
+
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener( SecurityErrorEvent.SECURITY_ERROR, onSecurityError );
+			loader.addEventListener( HTTPStatusEvent.HTTP_STATUS, onHTTPStatus );
+			loader.addEventListener( IOErrorEvent.IO_ERROR, onIOError );
+			loader.addEventListener( Event.COMPLETE, onComplete );
+
+			var httpRequest:HTTPRequest = dataRequest.httpRequest;
+
+			var req:URLRequest = new URLRequest();
+			Log.traceText( "req.requestHeaders : " + req.requestHeaders );
+			//req.requestHeaders.push( new URLRequestHeader( "Cache-Control", "no-store, must-revalidate, max-age=0" ) );
+			req.requestHeaders.push( new URLRequestHeader( "Cache-Control", "no-store" ) );
+			req.requestHeaders.push( new URLRequestHeader( "Pragma", "no-cache") );
+
+			req.url = httpRequest.altURL;
+			req.method = httpRequest.method;
+			if ( httpRequest.vars ) {
+				req.data = httpRequest.vars;
+			}
+
+			Log.traceNetSend( "Send " + httpRequest + " : " + req.url + ( httpRequest.vars == null ? "" : "?" + unescape( httpRequest.vars.toString() ) ) );
+
+			_dataRequests[loader] = dataRequest;
+
+			loader.load( req );
+		}
 		
 		/***************************************************************************
 		Обработчики лоадера
 		***************************************************************************/
-		//{ region
 		private function onComplete( ev:Event ):void {
 			callSuccessful( ev.target as URLLoader );
+		}
+
+		private function callSuccessful( loader:URLLoader ):void {
+			var dataRequest:DataRequest = _dataRequests[loader];
+
+			if ( !dataRequest ) return;
+
+			Log.traceNetAnswer( "Response " + dataRequest.httpRequest );
+
+			var f:Function = dataRequest.handlerSuccessful;
+			if ( f != null ) {
+				dataRequest.httpRequest.data = loader.data;
+				f( dataRequest.httpRequest );
+			}
+
+			//dataRequest.dispose();
+			delete _dataRequests[loader];
 		}
 		
 		private function onSecurityError( ev:SecurityErrorEvent ):void {
 			var loader:URLLoader = ev.target as URLLoader;
 			var dataRequest:DataRequest = _dataRequests[loader];
 			
-			Log.traceError( "HTTPManager: " + dataRequest.httpRequest + " Security Error: " + ev );
+			Log.traceError( "WEBService: " + dataRequest.httpRequest + " Security Error: " + ev );
 			
 			callError( ev.target as URLLoader );
 		}
@@ -118,43 +160,24 @@ package ru.arslanov.core.http {
 				message += ". Запрос по адресу altURL : " + dataRequest.httpRequest.altURL;
 			}
 			
-			Log.traceNetAnswer( "HTTPManager: " + dataRequest.httpRequest + " : " + message );
+			Log.traceNetAnswer( "WEBService: " + dataRequest.httpRequest + " : " + message );
 		}
 		
 		private function onIOError( ev:IOErrorEvent ):void {
 			var loader:URLLoader = ev.target as URLLoader;
 			var dataRequest:DataRequest = _dataRequests[loader];
 			
-			Log.traceError( "HTTPManager: " + dataRequest.httpRequest + " : IO Error: " + ev.text );
+			Log.traceError( "WEBService: " + dataRequest.httpRequest + " : IO Error: " + ev.text );
 			
 			callError( ev.target as URLLoader );
 		}
-		//} endregion
-		
-		
-		private function callSuccessful( loader:URLLoader ):void {
-			var dataRequest:DataRequest = _dataRequests[loader];
-			
-			if ( !dataRequest ) return;
-			
-			Log.traceNetAnswer( "Response " + dataRequest.httpRequest );
-			
-			var f:Function = dataRequest.callbackSuccessful;
-			if ( f != null ) {
-				dataRequest.httpRequest.responseData = loader.data;
-				f( dataRequest.httpRequest );
-			}
-			
-			//dataRequest.dispose();
-			delete _dataRequests[loader];
-		}
-		
+
 		private function callError( loader:URLLoader ):void {
 			var dataRequest:DataRequest = _dataRequests[loader];
 			
 			if ( !dataRequest ) return;
 			
-			var f:Function = dataRequest.callbackError;
+			var f:Function = dataRequest.handlerError;
 			if ( f != null ) {
 				f();
 			}
@@ -162,11 +185,12 @@ package ru.arslanov.core.http {
 			dataRequest.dispose();
 			delete _dataRequests[loader];
 		}
-		
+
+
+
 		public function dispose():void {
 			_queue = null;
 			_dataRequests = null;
-			_callbackCheckServer = null;
 		}
 	}
 }
@@ -176,18 +200,18 @@ import ru.arslanov.core.http.HTTPRequest;
 internal class DataRequest {
 	
 	public var httpRequest:HTTPRequest;
-	public var callbackSuccessful:Function;
-	public var callbackError:Function;
+	public var handlerSuccessful:Function;
+	public var handlerError:Function;
 	
 	public function DataRequest ( request:HTTPRequest, callbackSuccessful:Function = null, callbackError:Function = null ) {
-		httpRequest = request;
-		this.callbackSuccessful = callbackSuccessful;
-		this.callbackError = callbackError;
+		this.httpRequest = request;
+		this.handlerSuccessful = callbackSuccessful;
+		this.handlerError = callbackError;
 	}
 	
 	public function dispose():void {
 		httpRequest = null;
-		callbackSuccessful = null;
-		callbackError = null;
+		handlerSuccessful = null;
+		handlerError = null;
 	}
 }

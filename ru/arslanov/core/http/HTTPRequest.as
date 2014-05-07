@@ -9,23 +9,20 @@ package ru.arslanov.core.http {
 		
 		static private var _counter:Number = 0;
 		
-		public var responseData:Object; // Данные, возвращаемые сервером
+		public var data:Object; // Данные, возвращаемые сервером
 		
-		public var ajax:Boolean = false;
-		public var customDomain:String;
 		public var method:String = "POST";
-		public var url:String = "";
 		public var vars:URLVariables = null;
-		
-		public var altURL:String = ""; // Альтернативный путь, если сервер не доступен, будет попытка загрузить 
+		public var url:String = ""; // Основной адрес запроса
+		public var altURL:String = ""; // Альтернативный адрес, если основной не доступен
 		
 		private var _uid:Number = 0;
 		
-		public function HTTPRequest( url:String, vars:URLVariables = null, ajax:Boolean = false, method:String = "POST" ) {
+		public function HTTPRequest( url:String, altURL:String = null, vars:URLVariables = null, method:String = "POST" ) {
 			_uid = ++_counter;
 			
-			this.ajax = ajax;
 			this.url = url;
+			this.altURL = altURL;
 			this.vars = vars;
 			this.method = method;
 		}
