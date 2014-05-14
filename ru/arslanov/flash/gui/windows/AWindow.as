@@ -38,6 +38,16 @@ package ru.arslanov.flash.gui.windows {
 			
 			return super.init();
 		}
+
+		public function setBody( body:IKillable ):void
+		{
+			if ( this.body && contains( this.body as DisplayObject ) ) {
+				this.body.kill();
+			}
+
+			this.body = body;
+			addChildAt( this.body as DisplayObject, 0 );
+		}
 		
 		public function setConfiguration( config:Object ):void {
 			// TODO: реализовать инициализацию окна через класс конфигурации

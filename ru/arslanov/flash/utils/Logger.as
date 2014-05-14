@@ -193,7 +193,8 @@ package ru.arslanov.flash.utils {
 			
 			_count++;
 			
-			_tf.appendText( _count + ". " + String( message ) + "\n" );
+			_tf.appendText( _count + ". " + String( message ) );
+			_tf.appendText( "\n" );
 			
 			_tf.scrollV = _tf.maxScrollV;
 			
