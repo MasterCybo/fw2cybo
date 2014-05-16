@@ -99,7 +99,7 @@ package ru.arslanov.flash.display
 		 * Создание изображения из внедрённой ресурса
 		 * @param embedClass
 		 */
-		public function drawFromEmbed( embedClass:Class ):void
+		public function drawEmbed( embedClass:Class ):void
 		{
 			var bd:BitmapData = _cache[embedClass];
 
