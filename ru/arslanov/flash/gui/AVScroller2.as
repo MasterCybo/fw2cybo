@@ -10,21 +10,25 @@ package ru.arslanov.flash.gui {
 	import ru.arslanov.core.utils.Log;
 	import ru.arslanov.flash.display.ASprite;
 	import ru.arslanov.flash.interfaces.IKillable;
+	import ru.arslanov.flash.utils.Display;
 
 	/**
 	 * ...
 	 * @author Artem Arslanov
 	 */
 	public class AVScroller2 extends ASprite {
+		public var wheelDivide:uint = 10;
+		
+		private var _body:ASprite; // Тело скроллера
 		private var _thumb:ASprite; // Ползунок
-		private var _scroller:ASprite; // Скроллер
-		private var _container:ASprite;
-		private var _content:ASprite;
 		private var _minHThumb:Number; // Минимальная высота ползунка равна инициализированной высота ползунка
 
-		private var _position:Number = 0;
-		private var _height:Number;
-		private var _body:ASprite;
+		private var _position:Number = 0; // Положение ползунка 0-1
+		private var _height:Number = 0; // Высота скроллера
+		private var _downMouseY:Number = 0;
+		private var _downThumbY:Number = 0;
+		private var _targetHeight:Number = 0;
+		private var _viewportHeight:Number = 0;
 
 		public function AVScroller2( height:Number = 100 ) {
 			_height = height;
@@ -33,32 +37,99 @@ package ru.arslanov.flash.gui {
 		}
 
 		override public function init():* {
-			_body = new ASprite().init();
-			_content = new ASprite().init();
-			_scroller = new ASprite().init();
-
-			_container.addChild( _content );
-			addChild( _container );
-			addChild( _scroller );
-
-			_minHThumb = _thumb.height;
-
-			_scroller.addChild( _thumb as DisplayObject );
+			mouseEnabled = true;
+			
+			setThumb( new ASprite().init() );
+			setBody( new ASprite().init() );
+			setMouseControl();
 
 			return super.init();
 		}
 
-		/***************************************************************************
-		 Обработчики событий
-		 ***************************************************************************/
-		private function onMouseMove( ev:MouseControllerEvent ):void {
-			_thumb.y = Math.round( Math.min( Math.max( 0, _thumb.y + _msc.movement.y ), _height - _thumb.height ) );
+		public function setBody( displayObject:ASprite ):void
+		{
+			if ( _body ) _body.kill();
+			
+			_body = displayObject;
 
-			position = _thumb.y / ( _height - _thumb.height );
+			if ( _body ) {
+				_body.height = _height;
+				_body.mouseEnabled = true;
+				addChildAt( _body, 0 );
+			}
 		}
 
-		private function onMouseWheel( ev:MouseControllerEvent ):void {
-			position -= Calc.sign( _msc.deltaWheel ) * 0.05;
+		public function setThumb( displayObject:ASprite ):void
+		{
+			if ( _thumb ) _thumb.kill();
+
+			_thumb = displayObject;
+
+			if ( _thumb ) {
+				addChild( _thumb );
+				setMouseControl();
+			}
+		}
+
+		private function setMouseControl():void
+		{
+			_thumb.mouseEnabled = true;
+			_thumb.eventManager.addEventListener( MouseEvent.MOUSE_DOWN, onThumbMouseDown );
+			Display.stageRemoveEventListener( MouseEvent.MOUSE_MOVE, onStageMouseMove );
+			Display.stageRemoveEventListener( MouseEvent.MOUSE_UP, onStageMouseUp );
+			this.eventManager.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+		}
+
+		public function removeMouseControl():void
+		{
+			if ( _thumb ) {
+				_thumb.eventManager.removeEventListener( MouseEvent.MOUSE_DOWN, onThumbMouseDown );
+			}
+			Display.stageRemoveEventListener( MouseEvent.MOUSE_MOVE, onStageMouseMove );
+			Display.stageRemoveEventListener( MouseEvent.MOUSE_UP, onStageMouseUp );
+			this.eventManager.removeEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+		}
+
+		private function onThumbMouseDown( event:MouseEvent ):void
+		{
+//			_offsetMouseY = event.localY - _thumb.y;
+			_downMouseY = event.stageY;
+			_downThumbY = _thumb.y;
+			
+			Display.stageAddEventListener( MouseEvent.MOUSE_MOVE, onStageMouseMove );
+			Display.stageAddEventListener( MouseEvent.MOUSE_UP, onStageMouseUp );
+		}
+		
+		private function onStageMouseMove( event:MouseEvent ):void
+		{
+			var newY:Number = _downThumbY + event.stageY - _downMouseY;
+			var maxY:Number = _height - _thumb.height;
+			
+			_thumb.y = Math.max( 0, Math.min( newY, maxY ) );
+
+			updatePosition();
+		}
+		
+		private function onStageMouseUp( event:MouseEvent ):void
+		{
+			Display.stageRemoveEventListener( MouseEvent.MOUSE_MOVE, onStageMouseMove );
+			Display.stageRemoveEventListener( MouseEvent.MOUSE_UP, onStageMouseUp );
+		}
+
+		private function updatePosition():void
+		{
+			_position = _thumb.y / (_height - _thumb.height);
+		}
+
+		public function updateThumbY():void
+		{
+			_thumb.y = _position * (_height - _thumb.height);
+		}
+
+		private function onMouseWheel( event:MouseEvent ):void {
+			var deltaMouse:Number = event.delta / Math.abs( event.delta );
+			
+			position -= deltaMouse / wheelDivide;
 		}
 
 		/***************************************************************************
@@ -75,71 +146,53 @@ package ru.arslanov.flash.gui {
 
 			_position = value;
 
-			_thumb.y = ( _height - _thumb.height ) * value;
-
-			updateScrollRect();
+			updateThumbY();
 		}
 
 		/***************************************************************************
 		 Обновляторы
 		 ***************************************************************************/
-		public function update():void {
-			//_container.scrollRect = _viewPort;
-
-			updateScrollRect();
-
-			updateThumbHeight();
-			updateScroller();
-			updateVisible();
-		}
-
-		private function updateThumbHeight():void {
-			_thumb.height = int( Math.max( _height * _height / _content.height, _minHThumb ) );
-		}
-
-		private function updateScrollRect():void {
-			_viewPort.y = ( _content.height - _viewPort.height ) * position;
-			_container.scrollRect = _viewPort;
-		}
-
-		private function updateScroller():void {
-			//setXY( _container.x + _container.width, _container.y );
-			//_thumb.setXY( _container.x + _container.width, _container.y );
-
-			_scroller.x = _viewPort.x + _viewPort.width;
-		}
-
-		private function updateVisible():void {
-			var vis:Boolean = _content.height > _viewPort.height;
-
-			if ( vis == _scroller.visible )
-				return;
-
-			_scroller.visible = vis;
-
-			if ( _scroller.visible ) {
-				_container.scrollRect = _viewPort;
+		public function update( targetHeight:Number, viewportHeight:Number ):void {
+			_targetHeight = targetHeight;
+			_viewportHeight = viewportHeight;
+			
+			_thumb.height = _height * ( viewportHeight / targetHeight );
+			
+			if( viewportHeight < targetHeight ){
+				position = 0;
 			} else {
-				_container.scrollRect = null;
+				updateThumbY();
 			}
 		}
 
-		public function setViewPort( rect:Rectangle ):void {
-			rect.offset( _viewPort.x, _viewPort.y );
-
-			_viewPort = rect;
-
-			update();
-
-			_thumb.y = ( _viewPort.height - _thumb.height ) * _position;
+		override public function set height( value:Number ):void
+		{
+			_body.height = value;
+			
+			update( _targetHeight, _viewportHeight );
 		}
 
-		public function getViewPort():Rectangle {
-			return _viewPort;
+		private function updateThumbHeight():void {
+//			_thumb.height = int( Math.max( _height * _height / _content.height, _minHThumb ) );
+		}
+
+		private function checkThumbVisible():void {
+//			var vis:Boolean = _content.height > _viewPort.height;
+
+//			if ( vis == _scroller.visible )
+//				return;
+
+//			_scroller.visible = vis;
+
+//			if ( _scroller.visible ) {
+//				_container.scrollRect = _viewPort;
+//			} else {
+//				_container.scrollRect = null;
+//			}
 		}
 
 		override public function kill():void {
-			_msc.dispose();
+			removeMouseControl();
 
 			super.kill();
 		}
