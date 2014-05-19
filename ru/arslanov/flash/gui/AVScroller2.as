@@ -15,19 +15,22 @@ package ru.arslanov.flash.gui {
 		
 		private var _body:ASprite; // Тело скроллера
 		private var _thumb:ASprite; // Ползунок
-		private var _scrollTarget:DisplayObject;
+		private var _scrollTarget:Object;
 
 		private var _position:Number = 0; // Положение ползунка 0-1
 
 		private var _height:Number = 0; // Высота скроллера
-		private var _heightTarget:Number = 0;
-		private var _heightView:Number = 0;
+		private var _gapValue:Number = 0;
 
 		private var _downMouseY:Number = 0;
 		private var _downThumbY:Number = 0;
-		private var _targetY:Number = 0;
 
 		private var _isMouseDown:Boolean = false;
+		private var _thumbAutoSize:Boolean = true;
+		private var _scrollParam:String;
+		private var _minValue:Number = 0;
+		private var _maxValue:Number = 0;
+		private var _deltaValue:Number = 0;
 
 		public function AVScroller2( height:Number = 100 ) {
 			_height = height;
@@ -99,10 +102,11 @@ package ru.arslanov.flash.gui {
 
 			_thumb.y = Math.max( 0, Math.min( newY, maxY ) );
 
-			updatePositionOnMouse();
+			updatePosition();
 		}
 
-		private function onMouseWheel( event:MouseEvent ):void {
+		private function onMouseWheel( event:MouseEvent ):void
+		{
 			var deltaMouse:Number = event.delta / Math.abs( event.delta );
 			
 			position -= deltaMouse / wheelDivide;
@@ -136,16 +140,21 @@ package ru.arslanov.flash.gui {
 			}
 		}
 
-		public function get position():Number {
+		public function get position():Number
+		{
 			return _position;
 		}
 
-		public function set position( value:Number ):void {
+		public function set position( value:Number ):void
+		{
 			value = Math.max( 0, Math.min( value, 1 ) );
 
 			if ( value == position ) return;
 
-			_position = value;
+//			_position = value;
+			_position = Math.abs( value - (inverted ? 1 : 0) );
+
+			trace( "_position : " + _position );
 
 			if( !_isMouseDown ) updateThumbPosition();
 			updateTargetPosition();
@@ -155,51 +164,62 @@ package ru.arslanov.flash.gui {
 		{
 			_body.height = _height = value;
 
-			update( _heightTarget, _heightView );
+			gapScroll = _gapValue;
 		}
 
-		public function get scrollTarget():DisplayObject
+		public function get scrollTarget():Object
 		{
 			return _scrollTarget;
 		}
 
-		public function set scrollTarget( value:DisplayObject ):void
+		public function setScrollTarget( object:Object, param:String ):void
 		{
-			_scrollTarget = value;
-			_targetY = _scrollTarget.y;
+			_scrollTarget = object;
+			_scrollParam = param;
+		}
+
+		public function setScrollRange( minValue:Number, maxValue:Number ):void
+		{
+			_minValue = minValue;
+			_maxValue = maxValue;
+
+			_deltaValue = _maxValue - _minValue;
+		}
+
+		public function setThumbAutoSize( autoSize:Boolean = true, thumbHeight:Number = 5 ):void
+		{
+			_thumbAutoSize = autoSize;
+			_thumb.height = Math.max( 5, thumbHeight );
 		}
 
 		/***************************************************************************
 		 Обновляторы
 		 ***************************************************************************/
-		public function update( heightTarget:Number = 0, heightView:Number = 0 ):void {
-			_heightTarget = heightTarget > 0 ? heightTarget : _heightTarget ;
-			_heightView = heightView > 0 ? heightView : _heightView;
+		public function set gapScroll( gapValue:Number ):void {
+			_gapValue = gapValue;
 
-			if ( _heightTarget ) {
-				_thumb.height = _height * ( _heightView / _heightTarget );
+			if ( _thumbAutoSize ) {
+				_thumb.height = _height * ( (_gapValue ? _gapValue : 1) / _deltaValue );
+			}
 
-				if( _heightView < _heightTarget ){
-					position = 0;
-				} else {
-					updateThumbPosition();
-				}
+			if( _gapValue >= _deltaValue ) {
+				position = 0;
+			} else {
+				updatePosition();
+				updateThumbPosition();
 			}
 
 			checkThumbVisible();
 		}
 
-		private function updatePositionOnMouse():void
+		private function updatePosition():void
 		{
-//			_position = _thumb.y / (_height - _thumb.height);
 			position = _thumb.y / (_height - _thumb.height);
-
-//			updateTargetPosition();
 		}
 
 		private function updateTargetPosition():void
 		{
-			_scrollTarget.y = _targetY - position * (_heightTarget - _heightView);
+			_scrollTarget[_scrollParam] = _minValue + position * (_deltaValue - _gapValue) * (inverted ? 1 : -1);
 		}
 
 		public function updateThumbPosition():void
@@ -211,7 +231,7 @@ package ru.arslanov.flash.gui {
 		 * Проверка
 		 */
 		private function checkThumbVisible():void {
-			var vis:Boolean = _heightTarget > _heightView;
+			var vis:Boolean = _deltaValue > _gapValue;
 
 			if ( vis == _thumb.visible ) return;
 
