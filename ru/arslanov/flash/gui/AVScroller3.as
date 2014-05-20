@@ -85,18 +85,22 @@ package ru.arslanov.flash.gui {
 			}
 
 			if( _gapValue >= _deltaValue ) {
-				super.position = 0;
+//				super.position = 0; //
 			} else {
 //				updatePosition();
 				super.updateThumbPosition();
 			}
+
+			updateTargetPosition();
 
 			checkThumbVisible();
 		}
 
 		private function updateTargetPosition():void
 		{
-			_scrollTarget[_scrollAxis] = _minValue + position * (_deltaValue - _gapValue) * (inverted ? 1 : -1);
+			if ( !_scrollTarget || !_scrollAxis ) return;
+
+			_scrollTarget[_scrollAxis] = _minValue + super.position * (_deltaValue - _gapValue) * (inverted ? -1 : -1);
 		}
 
 		/**

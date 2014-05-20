@@ -1,4 +1,6 @@
 package ru.arslanov.flash.gui {
+	import avmplus.getQualifiedSuperclassName;
+
 	import flash.events.MouseEvent;
 
 	import ru.arslanov.flash.display.ASprite;
@@ -55,7 +57,7 @@ package ru.arslanov.flash.gui {
 		/**
 		 * Подключаем управление мышью
 		 */
-		private function setMouseControl():void
+		protected function setMouseControl():void
 		{
 			mouseEnabled = true;
 			_thumb.mouseEnabled = true;
@@ -68,7 +70,7 @@ package ru.arslanov.flash.gui {
 		/**
 		 * Удаляем управление мышью
 		 */
-		public function removeMouseControl():void
+		protected function removeMouseControl():void
 		{
 			mouseEnabled = false;
 			_thumb.mouseEnabled = false;
@@ -84,7 +86,7 @@ package ru.arslanov.flash.gui {
 		/***************************************************************************
 		 Обработчики мышиных событий
 		 ***************************************************************************/
-		private function onThumbMouseDown( event:MouseEvent ):void
+		protected function onThumbMouseDown( event:MouseEvent ):void
 		{
 			_downMouseY = event.stageY;
 			_downThumbY = _thumb.y;
@@ -93,13 +95,13 @@ package ru.arslanov.flash.gui {
 			Display.stageAddEventListener( MouseEvent.MOUSE_UP, onStageMouseUp );
 		}
 
-		private function onStageMouseUp( event:MouseEvent ):void
+		protected function onStageMouseUp( event:MouseEvent ):void
 		{
 			Display.stageRemoveEventListener( MouseEvent.MOUSE_MOVE, onStageMouseMove );
 			Display.stageRemoveEventListener( MouseEvent.MOUSE_UP, onStageMouseUp );
 		}
 
-		private function onStageMouseMove( event:MouseEvent ):void
+		protected function onStageMouseMove( event:MouseEvent ):void
 		{
 			var newY:Number = _downThumbY + event.stageY - _downMouseY;
 			var maxY:Number = _size - _thumb.height;
@@ -111,7 +113,7 @@ package ru.arslanov.flash.gui {
 			updatePosition();
 		}
 
-		private function onMouseWheel( event:MouseEvent ):void
+		protected function onMouseWheel( event:MouseEvent ):void
 		{
 			var deltaMouse:Number = event.delta / Math.abs( event.delta ) * (inverted ? -1 : 1);
 
@@ -217,13 +219,23 @@ package ru.arslanov.flash.gui {
 
 			_inverted = value;
 
-			_position = Math.abs( position - (inverted ? 1 : 0) );
+			//*/
+			// С отправкой события
+			var oldPos:Number = position;
+			_position = -1;
+			position = Math.abs( oldPos - (inverted ? 0 : 1) );
+			/*/
+			// Без отправки события
+			_position = Math.abs( position - (inverted ? 0 : 1) );
+
+			updateThumbPosition();
+			//*/
 		}
 
 		/***************************************************************************
 		 Обновляторы
 		 ***************************************************************************/
-		private function updatePosition():void
+		protected function updatePosition():void
 		{
 			var newPos:Number = _thumb.y / (_size - _thumb.height);
 
@@ -232,20 +244,17 @@ package ru.arslanov.flash.gui {
 			position = Math.abs( newPos - (inverted ? 1 : 0) );
 		}
 
-		public function updateThumbPosition():void
+		protected function updateThumbPosition():void
 		{
+			if ( !_thumb ) return;
+
 			var newY:Number = Math.abs( position - (inverted ? 1 : 0) ) * (_size - _thumb.height);
 
-			if( newY == _thumb.y ) return;
+			if ( newY == _thumb.y ) return;
 
 			_thumb.y = newY;
 
-			if( roundToPixel ) _thumb.y = Math.round(_thumb.y);
-		}
-
-		private function getAbsPosition( pos:Number ):Number
-		{
-			return Math.abs( pos - (inverted ? 1 : 0) );
+			if ( roundToPixel ) _thumb.y = Math.round( _thumb.y );
 		}
 
 		override public function kill():void {
