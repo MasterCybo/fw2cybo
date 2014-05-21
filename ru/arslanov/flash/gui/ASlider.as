@@ -1,6 +1,4 @@
 package ru.arslanov.flash.gui {
-	import avmplus.getQualifiedSuperclassName;
-
 	import flash.events.MouseEvent;
 
 	import ru.arslanov.flash.display.ASprite;
@@ -12,17 +10,21 @@ package ru.arslanov.flash.gui {
 	 * @author Artem Arslanov
 	 */
 	public class ASlider extends ASprite {
-		public var wheelDivide:uint = 10; // Количество шагов при прокрутке колесом мыши
-//		public var inverted:Boolean = false; // обратный отсчёт позиции
-		public var roundToPixel:Boolean = true; // Округление позиции ползунка
+		/**
+		 * Количество шагов при прокрутке колесом мыши
+		 */
+		public var wheelSteps:uint = 10;
+		/**
+		 * Округление координаты ползунка
+		 */
+		public var roundToPixel:Boolean = true;
 
+		
 		private var _body:ASprite; // Тело скроллера
 		private var _thumb:ASprite; // Ползунок
 
 		private var _position:Number = -1; // Положение ползунка 0-1
-
 		private var _size:Number = 0; // Высота скроллера
-
 		private var _downMouseY:Number = 0;
 		private var _downThumbY:Number = 0;
 
@@ -83,9 +85,9 @@ package ru.arslanov.flash.gui {
 			this.eventManager.removeEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 		}
 
-		/***************************************************************************
+		/*==========================================================================
 		 Обработчики мышиных событий
-		 ***************************************************************************/
+		 ===========================================================================*/
 		protected function onThumbMouseDown( event:MouseEvent ):void
 		{
 			_downMouseY = event.stageY;
@@ -117,19 +119,28 @@ package ru.arslanov.flash.gui {
 		{
 			var deltaMouse:Number = event.delta / Math.abs( event.delta ) * (inverted ? -1 : 1);
 
-			position -= deltaMouse / wheelDivide;
+			position -= deltaMouse / wheelSteps;
 		}
 
-		/***************************************************************************
+		/*==========================================================================
 		 Геттеры / Сеттеры
-		 ***************************************************************************/
-		public function setBody( value:ASprite ):void
+		 ===========================================================================*/
+		public function getBody():ASprite
 		{
-			if ( value == _body ) return;
+			return _body;
+		}
+		
+		/**
+		 * Назначение изображения подложки слайдера. Предыдущая подложка удаляется.
+		 * @param body - новый дисплейный объект или кнопка.
+		 * */
+		public function setBody( body:ASprite ):void
+		{
+			if ( body == _body ) return;
 
 			if ( _body ) _body.kill();
 
-			_body = value;
+			_body = body;
 
 			if ( _body ) {
 				_body.mouseEnabled = true;
@@ -138,35 +149,38 @@ package ru.arslanov.flash.gui {
 			}
 		}
 
-		public function getBody():ASprite
+		public function getThumb():ASprite
 		{
-			return _body;
+			return _thumb;
 		}
-
-		public function setThumb( value:ASprite ):void
+		
+		/**
+		 * Назначение изображения ползунка. Предыдущий ползунок удаляется.
+		 * @param thumb - новый дисплейный объект или кнопка.
+		 **/
+		public function setThumb( thumb:ASprite ):void
 		{
-			if ( value == _thumb ) return;
+			if ( thumb == _thumb ) return;
 
 			if ( _thumb ) _thumb.kill();
 
-			_thumb = value;
+			_thumb = thumb;
 
 			if ( _body ) {
 				addChild( _thumb );
 				setMouseControl();
 			}
 		}
-
-		public function getThumb():ASprite
-		{
-			return _thumb;
-		}
-
+		
 		public function get position():Number
 		{
 			return _position;
 		}
 
+		/**
+		 * Задание позиции слайдера от 0 до 1.
+		 * @param value - по-умолчанию 0.
+		 **/
 		public function set position( value:Number ):void
 		{
 			value = Math.max( 0, Math.min( value, 1 ) );
@@ -180,16 +194,20 @@ package ru.arslanov.flash.gui {
 			eventManager.dispatchEvent( new ASliderEvent( position, ASliderEvent.CHANGE_VALUE ) );
 		}
 
+		public function get size():Number
+		{
+			return _size;
+		}
+		
+		/**
+		 * Задание размера слайдера - ширины или высоты, в зависимости от ориентации.
+		 * @param value - значение размера в пикселах
+		 **/
 		public function set size( value:Number ):void
 		{
 			_body.height = _size = value;
 
 			updateThumbPosition();
-		}
-
-		public function get size():Number
-		{
-			return _size;
 		}
 
 		public function set enabled( value:Boolean ):void
@@ -213,6 +231,10 @@ package ru.arslanov.flash.gui {
 			return _inverted;
 		}
 
+		/**
+		 * Установка инвертированного режима, минимальное и максимальное значение меняются местами. По-умолчанию inverted = false.
+		 * @param value - true/false.
+		 **/
 		public function set inverted( value:Boolean ):void
 		{
 			if ( value == inverted ) return;
@@ -232,9 +254,12 @@ package ru.arslanov.flash.gui {
 			//*/
 		}
 
-		/***************************************************************************
+		/*==========================================================================
 		 Обновляторы
-		 ***************************************************************************/
+		 ===========================================================================*/
+		/**
+		 * Установка позиции слайдера в зависимости от координат ползунка.
+		 */
 		protected function updatePosition():void
 		{
 			var newPos:Number = _thumb.y / (_size - _thumb.height);
@@ -244,6 +269,9 @@ package ru.arslanov.flash.gui {
 			position = Math.abs( newPos - (inverted ? 1 : 0) );
 		}
 
+		/**
+		 * Установка координаты ползунка, в зависимости от значения позиции слайдера.
+		 */
 		protected function updateThumbPosition():void
 		{
 			if ( !_thumb ) return;
