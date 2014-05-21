@@ -6,7 +6,9 @@ package ru.arslanov.flash.gui {
 	import ru.arslanov.flash.utils.Display;
 
 	/**
-	 * ...
+	 * Слайдер - графический-компонент, который изменяет значение свойста от 0 до 1 с помощью мышки.
+	 * Позволяет задавать визуальное элементы: подложку и ползунок.
+	 * Поддерживает управление колесом мыши.
 	 * @author Artem Arslanov
 	 */
 	public class ASlider extends ASprite {
