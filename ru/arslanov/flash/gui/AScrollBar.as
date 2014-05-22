@@ -1,5 +1,6 @@
 package ru.arslanov.flash.gui
 {
+	import ru.arslanov.core.utils.Log;
 	import ru.arslanov.flash.display.ASprite;
 	import ru.arslanov.flash.gui.events.ASliderEvent;
 
@@ -11,6 +12,8 @@ package ru.arslanov.flash.gui
 	 */
 	public class AScrollBar extends ASlider
 	{
+		public var minThumbHeight:Number = 5;
+		
 		private var _scrollTarget:Object;
 
 		private var _maskSize:Number = 0;
@@ -46,13 +49,13 @@ package ru.arslanov.flash.gui
 		 ===========================================================================*/
 		/**
 		 * Размер скроллера
-		 * @param value
+		 * @param value:Number
 		 */
 		override public function set size( value:Number ):void
 		{
 			super.size = value;
 
-			setMaskSize(_maskSize);
+			update(); // replaced setMaskSize( _maskSize );
 		}
 
 		public function getScrollTarget():Object
@@ -62,8 +65,8 @@ package ru.arslanov.flash.gui
 
 		/**
 		 * Задание целевого объекта и его параметра, который будет изменяться скроллером. 
-		 * @param object - любой объект, свойство которого можно менять.
-		 * @param paramName - имя свойства, подлежащего изменениям.
+		 * @param object:Object - любой объект, свойство которого можно менять.
+		 * @param paramName:String - имя свойства, подлежащего изменениям.
 		 */
 		public function setScrollTarget( object:Object, paramName:String = "y" ):void
 		{
@@ -81,8 +84,8 @@ package ru.arslanov.flash.gui
 
 		/**
 		 * Установка диапазона прокруки. Для дисплейного объекта, это могут быть значения y и y + height.
-		 * @param minValue - положение целевого объекта, соответствующее значению position = 0.
-		 * @param maxValue - положение целевого объекта, соответствующее значению position = 1.
+		 * @param minValue:Number - положение целевого объекта, соответствующее значению position = 0.
+		 * @param maxValue:Number - положение целевого объекта, соответствующее значению position = 1.
 		 */
 		public function setScrollRange( minValue:Number, maxValue:Number ):void
 		{
@@ -90,32 +93,57 @@ package ru.arslanov.flash.gui
 			_maxValue = maxValue;
 
 			_range = _maxValue - _minValue;
+
+			update(); // replaced setMaskSize( _maskSize );
+			
 		}
 
 		/**
 		 * Настройка размера ползунка. Указывается ширина или высота в зависимости от ориентации прокрутки.
-		 * @param autoSize - вкл./откл. автоматического изменения размера в зависимости от диапазона прокрутки и размера маски.
+		 * @param autoSize:Boolean - вкл./откл. автоматического изменения размера в зависимости от диапазона прокрутки и размера маски.
 		 * 					По-умолчанию autoSize = true.
-		 * @param thumbHeight - если autoSize = false, можно задать фиксированный размер ползунка.
+		 * @param thumbHeight:Number - если autoSize = false, можно задать фиксированный размер ползунка.
 		 * 						Минимальный размер ползунка 5 px.
 		 */
 		public function setThumbAutoSize( autoSize:Boolean, thumbHeight:Number = 5 ):void
 		{
 			_thumbAutoSize = autoSize;
-			super.getThumb().height = Math.max( 5, thumbHeight );
-			setMaskSize(_maskSize);
+			super.getThumb().height = Math.max( minThumbHeight, thumbHeight );
+			
+			update(); // replaced setMaskSize( _maskSize );
 		}
 
+		public function get maskSize():Number
+		{
+			return _maskSize;
+		}
+		
 		/**
 		 * Размер маски. Указывается ширина или высота в зависимости от ориентации прокрутки.
-		 * @param value
+		 * @param value:Number
 		 */
 		public function setMaskSize( value:Number ):void
 		{
 			_maskSize = value;
 
+			
+			// code from update();
+
+			update();
+		}
+
+		/*==========================================================================
+		 Обновляторы
+		 ===========================================================================*/
+		/**
+		 * Обновление свойства целевого объекта, в зависимости от значения позиции.
+		 */
+		public function update():void
+		{
 			if ( _thumbAutoSize ) {
-				super.getThumb().height = super.size * ( (_maskSize ? _maskSize : 1) / _range );
+//				Log.traceText( "    set thumb height : " + (super.size * ( (_maskSize ? _maskSize : 1) / _range )) );
+				super.getThumb().height = Math.max(minThumbHeight, super.size * ( (_maskSize ? _maskSize : 1) / _range ) );
+//				Log.traceText( "    super.getThumb().height : " + super.getThumb().height );
 			}
 
 			/*/
@@ -134,13 +162,7 @@ package ru.arslanov.flash.gui
 			updateTargetPosition();
 			checkThumbVisible();
 		}
-
-		/*==========================================================================
-		 Обновляторы
-		 ===========================================================================*/
-		/**
-		 * Обновление свойства целевого объекта, в зависимости от значения позиции.
-		 */
+		
 		private function updateTargetPosition():void
 		{
 			if ( !_scrollTarget || !_param ) return;

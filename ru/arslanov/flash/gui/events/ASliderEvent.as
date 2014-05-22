@@ -13,11 +13,11 @@ package ru.arslanov.flash.gui.events
 	{
 		static public const CHANGE_VALUE:String = "ASliderEvent.changeValue";
 
-		public var value:Number = 0;
+		public var position:Number = 0;
 
 		public function ASliderEvent( position:Number, type:String, bubbles:Boolean = false, cancelable:Boolean = false )
 		{
-			this.value = position;
+			this.position = position;
 
 			super( type, bubbles, cancelable );
 		}
@@ -25,7 +25,7 @@ package ru.arslanov.flash.gui.events
 		override public function clone():Event
 		{
 			var event:ASliderEvent = super.clone() as ASliderEvent;
-			event.value = this.value;
+			event.position = this.position;
 			return event;
 		}
 	}

@@ -134,7 +134,7 @@ package ru.arslanov.flash.gui {
 		
 		/**
 		 * Назначение изображения подложки слайдера. Предыдущая подложка удаляется.
-		 * @param body - новый дисплейный объект или кнопка.
+		 * @param body:ASprite - новый дисплейный объект или кнопка.
 		 * */
 		public function setBody( body:ASprite ):void
 		{
@@ -158,7 +158,7 @@ package ru.arslanov.flash.gui {
 		
 		/**
 		 * Назначение изображения ползунка. Предыдущий ползунок удаляется.
-		 * @param thumb - новый дисплейный объект или кнопка.
+		 * @param thumb:ASprite - новый дисплейный объект или кнопка.
 		 **/
 		public function setThumb( thumb:ASprite ):void
 		{
@@ -181,7 +181,7 @@ package ru.arslanov.flash.gui {
 
 		/**
 		 * Задание позиции слайдера от 0 до 1.
-		 * @param value - по-умолчанию 0.
+		 * @param value:Number - по-умолчанию 0.
 		 **/
 		public function set position( value:Number ):void
 		{
@@ -203,7 +203,7 @@ package ru.arslanov.flash.gui {
 		
 		/**
 		 * Задание размера слайдера - ширины или высоты, в зависимости от ориентации.
-		 * @param value - значение размера в пикселах
+		 * @param value:Number - значение размера в пикселах
 		 **/
 		public function set size( value:Number ):void
 		{
@@ -235,7 +235,7 @@ package ru.arslanov.flash.gui {
 
 		/**
 		 * Установка инвертированного режима, минимальное и максимальное значение меняются местами. По-умолчанию inverted = false.
-		 * @param value - true/false.
+		 * @param value:Boolean - true/false.
 		 **/
 		public function set inverted( value:Boolean ):void
 		{
