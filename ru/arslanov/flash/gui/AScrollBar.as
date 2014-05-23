@@ -142,7 +142,7 @@ package ru.arslanov.flash.gui
 		{
 			if ( _thumbAutoSize ) {
 //				Log.traceText( "    set thumb height : " + (super.size * ( (_maskSize ? _maskSize : 1) / _range )) );
-				super.getThumb().height = Math.max(minThumbHeight, super.size * ( (_maskSize ? _maskSize : 1) / _range ) );
+				super.getThumb().height = Math.max( minThumbHeight, super.size * ( (_maskSize ? _maskSize : 1) / _range ) );
 //				Log.traceText( "    super.getThumb().height : " + super.getThumb().height );
 			}
 

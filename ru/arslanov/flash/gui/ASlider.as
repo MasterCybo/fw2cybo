@@ -1,4 +1,5 @@
-package ru.arslanov.flash.gui {
+package ru.arslanov.flash.gui
+{
 	import flash.events.MouseEvent;
 
 	import ru.arslanov.flash.display.ASprite;
@@ -11,17 +12,24 @@ package ru.arslanov.flash.gui {
 	 * Поддерживает управление колесом мыши.
 	 * @author Artem Arslanov
 	 */
-	public class ASlider extends ASprite {
+	public class ASlider extends ASprite
+	{
 		/**
 		 * Количество шагов при прокрутке колесом мыши
 		 */
 		public var wheelSteps:uint = 10;
+
 		/**
 		 * Округление координаты ползунка
 		 */
 		public var roundToPixel:Boolean = true;
 
-		
+		/**
+		 * Величина, на которую ползунок может выезжать за пределы подложки
+		 */
+		public var overhang:Number = 0;
+
+
 		private var _body:ASprite; // Тело скроллера
 		private var _thumb:ASprite; // Ползунок
 
@@ -32,7 +40,8 @@ package ru.arslanov.flash.gui {
 
 		private var _inverted:Boolean = false; // обратный отсчёт позиции
 
-		public function ASlider( size:Number = 100, body:ASprite = null, thumb:ASprite = null ) {
+		public function ASlider( size:Number = 100, body:ASprite = null, thumb:ASprite = null )
+		{
 			_size = size;
 			_body = body;
 			_thumb = thumb;
@@ -40,7 +49,8 @@ package ru.arslanov.flash.gui {
 			super();
 		}
 
-		override public function init():* {
+		override public function init():*
+		{
 			if ( !_body ) new ASprite().init();
 			if ( !_thumb ) new ASprite().init();
 
@@ -68,7 +78,7 @@ package ru.arslanov.flash.gui {
 			_thumb.eventManager.addEventListener( MouseEvent.MOUSE_DOWN, onThumbMouseDown );
 			Display.stageRemoveEventListener( MouseEvent.MOUSE_MOVE, onStageMouseMove );
 			Display.stageRemoveEventListener( MouseEvent.MOUSE_UP, onStageMouseUp );
-			this.eventManager.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+			this.eventManager.addEventListener( MouseEvent.MOUSE_WHEEL, onMouseWheel );
 		}
 
 		/**
@@ -84,7 +94,7 @@ package ru.arslanov.flash.gui {
 			}
 			Display.stageRemoveEventListener( MouseEvent.MOUSE_MOVE, onStageMouseMove );
 			Display.stageRemoveEventListener( MouseEvent.MOUSE_UP, onStageMouseUp );
-			this.eventManager.removeEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+			this.eventManager.removeEventListener( MouseEvent.MOUSE_WHEEL, onMouseWheel );
 		}
 
 		/*==========================================================================
@@ -94,7 +104,7 @@ package ru.arslanov.flash.gui {
 		{
 			_downMouseY = event.stageY;
 			_downThumbY = _thumb.y;
-			
+
 			Display.stageAddEventListener( MouseEvent.MOUSE_MOVE, onStageMouseMove );
 			Display.stageAddEventListener( MouseEvent.MOUSE_UP, onStageMouseUp );
 		}
@@ -108,11 +118,14 @@ package ru.arslanov.flash.gui {
 		protected function onStageMouseMove( event:MouseEvent ):void
 		{
 			var newY:Number = _downThumbY + event.stageY - _downMouseY;
-			var maxY:Number = _size - _thumb.height;
 
-			_thumb.y = Math.max( 0, Math.min( newY, maxY ) );
+			var maxY:Number = _size + overhang - _thumb.height;
+			_thumb.y = Math.max( -overhang, Math.min( newY, maxY ) );
 
-			if( roundToPixel ) _thumb.y = Math.round(_thumb.y);
+//			var maxY:Number = _size - _thumb.height;
+//			_thumb.y = Math.max( 0, Math.min( newY, maxY ) );
+
+			if ( roundToPixel ) _thumb.y = Math.round( _thumb.y );
 
 			updatePosition();
 		}
@@ -131,7 +144,7 @@ package ru.arslanov.flash.gui {
 		{
 			return _body;
 		}
-		
+
 		/**
 		 * Назначение изображения подложки слайдера. Предыдущая подложка удаляется.
 		 * @param body:ASprite - новый дисплейный объект или кнопка.
@@ -155,7 +168,7 @@ package ru.arslanov.flash.gui {
 		{
 			return _thumb;
 		}
-		
+
 		/**
 		 * Назначение изображения ползунка. Предыдущий ползунок удаляется.
 		 * @param thumb:ASprite - новый дисплейный объект или кнопка.
@@ -173,7 +186,7 @@ package ru.arslanov.flash.gui {
 				setMouseControl();
 			}
 		}
-		
+
 		public function get position():Number
 		{
 			return _position;
@@ -200,7 +213,7 @@ package ru.arslanov.flash.gui {
 		{
 			return _size;
 		}
-		
+
 		/**
 		 * Задание размера слайдера - ширины или высоты, в зависимости от ориентации.
 		 * @param value:Number - значение размера в пикселах
@@ -214,7 +227,7 @@ package ru.arslanov.flash.gui {
 
 		public function set enabled( value:Boolean ):void
 		{
-			if( value == enabled ) return;
+			if ( value == enabled ) return;
 
 			if ( value ) {
 				setMouseControl();
@@ -249,11 +262,11 @@ package ru.arslanov.flash.gui {
 			_position = -1;
 			position = Math.abs( oldPos - (inverted ? 0 : 1) );
 			/*/
-			// Без отправки события
-			_position = Math.abs( position - (inverted ? 0 : 1) );
+			 // Без отправки события
+			 _position = Math.abs( position - (inverted ? 0 : 1) );
 
-			updateThumbPosition();
-			//*/
+			 updateThumbPosition();
+			 //*/
 		}
 
 		/*==========================================================================
@@ -264,7 +277,8 @@ package ru.arslanov.flash.gui {
 		 */
 		protected function updatePosition():void
 		{
-			var newPos:Number = _thumb.y / (_size - _thumb.height);
+//			var newPos:Number = _thumb.y / (_size - _thumb.height);
+			var newPos:Number = (_thumb.y + overhang) / (_size + 2 * overhang - _thumb.height);
 
 			if ( newPos == position ) return;
 
@@ -278,7 +292,8 @@ package ru.arslanov.flash.gui {
 		{
 			if ( !_thumb ) return;
 
-			var newY:Number = Math.abs( position - (inverted ? 1 : 0) ) * (_size - _thumb.height);
+			var newY:Number = Math.abs( position - (inverted ? 1 : 0) ) * (_size + 2 * overhang - _thumb.height) - overhang;
+//			var newY:Number = Math.abs( position - (inverted ? 1 : 0) ) * (_size - _thumb.height);
 
 			if ( newY == _thumb.y ) return;
 
@@ -287,7 +302,8 @@ package ru.arslanov.flash.gui {
 			if ( roundToPixel ) _thumb.y = Math.round( _thumb.y );
 		}
 
-		override public function kill():void {
+		override public function kill():void
+		{
 			removeMouseControl();
 
 			super.kill();
