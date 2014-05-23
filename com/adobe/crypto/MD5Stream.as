@@ -30,14 +30,14 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.crypto
+package fw2cybo.com.adobe.crypto
 {
-    import com.adobe.utils.IntUtil;   
+    import fw2cybo.com.adobe.utils.IntUtil;
     import flash.utils.ByteArray;
 
     /**
      * Perform MD5 hash of an input stream in chunks. This class is
-     * based on com.adobe.crypto.MD5 and can process data in
+     * based on fw2cybo.com.adobe.crypto.MD5 and can process data in
      * chunks. Both block creation and hash computation are done
      * together for whatever input is available so that the memory
      * overhead at a time is always fixed. Memory usage is governed by
@@ -330,7 +330,7 @@ package com.adobe.crypto
             arrLen = arr.length;
         }  
         
-        /* Code below same as com.adobe.crypto.MD5 */ 
+        /* Code below same as fw2cybo.com.adobe.crypto.MD5 */
         
         /**
          * Auxiliary function f as defined in RFC

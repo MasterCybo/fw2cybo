@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.net
+package fw2cybo.com.adobe.net
 {
 	import flash.utils.ByteArray;
 	
@@ -346,9 +346,9 @@ package com.adobe.net
 		 * This routine assumes that the URI being passed is well formed.
 		 * Passing things like local paths, malformed URI's, and the such
 		 * will result in parsing errors.  This function can handle
-		 * 	 - absolute hierarchical (e.g. "http://something.com/index.html),
+		 * 	 - absolute hierarchical (e.g. "http://something.fw2cybo.com/index.html),
 		 *   - relative hierarchical (e.g. "../images/flower.gif"), or
-		 *   - non-hierarchical URIs (e.g. "mailto:jsmith&#64;fungoo.com").
+		 *   - non-hierarchical URIs (e.g. "mailto:jsmith&#64;fungoo.fw2cybo.com").
 		 * 
 		 * Anything else will probably result in a parsing error, or a bogus
 		 * URI object.
@@ -434,7 +434,7 @@ package com.adobe.net
 				}
 				else
 				{
-					// This is a non-hierarchical URI like "mailto:bob@mail.com"
+					// This is a non-hierarchical URI like "mailto:bob@mail.fw2cybo.com"
 					_nonHierarchical = baseURI;
 		
 					if ((_valid = validateURI()) == false)
@@ -482,7 +482,7 @@ package com.adobe.net
 				index = baseURI.search('/');
 				if (index == -1)
 				{
-					// No path.  We must have passed something like "http://something.com"
+					// No path.  We must have passed something like "http://something.fw2cybo.com"
 					_authority = baseURI;
 					_path = "";
 				}
@@ -493,7 +493,7 @@ package com.adobe.net
 				}
 		
 				// Check to see if the URI has any username or password information.
-				// For example:  ftp://username:password@server.com
+				// For example:  ftp://username:password@server.fw2cybo.com
 				index = _authority.search('@');
 				if (index != -1)
 				{
@@ -597,7 +597,7 @@ package com.adobe.net
 		
 		/**
 		 * Is this URI an absolute URI?  An absolute URI is a complete, fully
-		 * qualified reference to a resource.  e.g. http://site.com/index.htm
+		 * qualified reference to a resource.  e.g. http://site.fw2cybo.com/index.htm
 		 * Non-hierarchical URI's are always absolute.
 		 */
 		public function isAbsolute() : Boolean
@@ -738,7 +738,7 @@ package com.adobe.net
 		 * the URI is relative, this will be an empty string. URI's can
 		 * contain the port number of the remote host:
 		 * 
-		 * <p>http://site.com:8080/index.htm</p>
+		 * <p>http://site.fw2cybo.com:8080/index.htm</p>
 		 */
 		public function get port() : String
 		{ 
@@ -777,7 +777,7 @@ package com.adobe.net
 		 * an absolute or relative URI.  An absolute URI can only have absolute
 		 * paths.  For example:</p>
 		 * 
-		 * <listing>http:/site.com/path/to/file.htm</listing>
+		 * <listing>http:/site.fw2cybo.com/path/to/file.htm</listing>
 		 * 
 		 * <p>This absolute URI has an absolute path of "/path/to/file.htm".</p>
 		 * 
@@ -825,7 +825,7 @@ package com.adobe.net
 		 * However, most systems have standardized on the typical CGI
 		 * format:</p>
 		 * 
-		 * <listing>http://site.com/script.php?param1=value1&param2=value2</listing>
+		 * <listing>http://site.fw2cybo.com/script.php?param1=value1&param2=value2</listing>
 		 * 
 		 * <p>This class has specific support for this query syntax</p>
 		 * 
@@ -893,8 +893,8 @@ package com.adobe.net
 		
 		/**
 		 * The non-hierarchical part of the URI.  For example, if
-		 * this URI object represents "mailto:somebody&#64;company.com",
-		 * this will contain "somebody&#64;company.com".  This is valid only
+		 * this URI object represents "mailto:somebody&#64;company.fw2cybo.com",
+		 * this will contain "somebody&#64;company.fw2cybo.com".  This is valid only
 		 * for non-hierarchical URI's.  
 		 */
 		public function get nonHierarchical() : String
@@ -1031,7 +1031,7 @@ package com.adobe.net
 		/**
 		 * Is this URI of a particular scheme type?  For example,
 		 * passing "http" to a URI object that represents the URI
-		 * "http://site.com/" would return true.
+		 * "http://site.fw2cybo.com/" would return true.
 		 * 
 		 * @param scheme	scheme to check for
 		 * 
@@ -1468,7 +1468,7 @@ package com.adobe.net
 		 * Get the ".xyz" file extension from the filename in the URI.
 		 * For example, if we have the following URI:
 		 * 
-		 * <listing>http://something.com/path/to/my/page.html?form=yes&name=bob#anchor</listing>
+		 * <listing>http://something.fw2cybo.com/path/to/my/page.html?form=yes&name=bob#anchor</listing>
 		 * 
 		 * <p>This will return ".html".</p>
 		 * 
@@ -1507,7 +1507,7 @@ package com.adobe.net
 		 * Quick function to retrieve the file name off the end of a URI.
 		 * 
 		 * <p>For example, if the URI is:</p>
-		 * <listing>http://something.com/some/path/to/my/file.html</listing>
+		 * <listing>http://something.fw2cybo.com/some/path/to/my/file.html</listing>
 		 * <p>this function will return "file.html".</p>
 		 * 
 		 * @param minusExtension true if the file extension should be stripped
@@ -1706,8 +1706,8 @@ package com.adobe.net
 			// and port match, and it is not a relative path, but the
 			// paths did not match.  There is a special case where we
 			// could have:
-			//		http://something.com/
-			//		http://something.com
+			//		http://something.fw2cybo.com/
+			//		http://something.fw2cybo.com
 			// Technically, these are equal.  So lets, check for this case.
 			var thisPath:String = thisURI.path;
 			var thatPath:String = thatURI.path;
@@ -1721,8 +1721,8 @@ package com.adobe.net
 		
 			// Ok, the paths do not match, but one path may be a parent/child
 			// of the other.  For example, we may have:
-			//		http://something.com/path/to/homepage/
-			//		http://something.com/path/to/homepage/images/logo.gif
+			//		http://something.fw2cybo.com/path/to/homepage/
+			//		http://something.fw2cybo.com/path/to/homepage/images/logo.gif
 			// In this case, the first is a parent of the second (or the second
 			// is a child of the first, depending on which you compare to the
 			// other).  To make this comparison, we must split the path into
@@ -1870,11 +1870,11 @@ package com.adobe.net
 		 * <p>URI paths that end in '/' are considered paths that point to
 		 * directories, while paths that do not end in '/' are files.  For
 		 * example, if you execute chdir("d") on the following URI's:<br/>
-		 *    1.  http://something.com/a/b/c/  (directory)<br/>
-		 *    2.  http://something.com/a/b/c  (not directory)<br/>
+		 *    1.  http://something.fw2cybo.com/a/b/c/  (directory)<br/>
+		 *    2.  http://something.fw2cybo.com/a/b/c  (not directory)<br/>
 		 * you will get:<br/>
-		 *    1.  http://something.com/a/b/c/d<br/>
-		 *    2.  http://something.com/a/b/d<br/></p>
+		 *    1.  http://something.fw2cybo.com/a/b/c/d<br/>
+		 *    2.  http://something.fw2cybo.com/a/b/d<br/></p>
 		 * 
 		 * <p>See RFC 2396, Appendix C for more info.</p>
 		 * 
@@ -2169,8 +2169,8 @@ package com.adobe.net
 		 * if you have:
 		 * 
 		 * <listing>
-		 * var uri1:URI = new URI("http://something.com/path/to/some/file.html");
-		 * var uri2:URI = new URI("http://something.com/path/to/another/file.html");
+		 * var uri1:URI = new URI("http://something.fw2cybo.com/path/to/some/file.html");
+		 * var uri2:URI = new URI("http://something.fw2cybo.com/path/to/another/file.html");
 		 * 
 		 * uri1.MakeRelativePath(uri2);</listing>
 		 * 
@@ -2328,7 +2328,7 @@ package com.adobe.net
 		/**
 		 * Given a string, convert it to a URI.  The string could be a
 		 * full URI that is improperly escaped, a malformed URI (e.g.
-		 * missing a protocol like "www.something.com"), a relative URI,
+		 * missing a protocol like "www.something.fw2cybo.com"), a relative URI,
 		 * or any variation there of.
 		 * 
 		 * <p>The intention of this function is to take anything that a

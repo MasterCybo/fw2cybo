@@ -1,5 +1,5 @@
 ﻿/**
- * http://code.google.com/p/mrdoob/wiki/stats
+ * http://code.google.fw2cybo.com/p/mrdoob/wiki/stats
  * 
  * Hi-ReS! Stats
  * 

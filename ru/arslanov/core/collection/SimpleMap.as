@@ -1,5 +1,5 @@
 package ru.arslanov.core.collection {
-	import com.adobe.utils.DictionaryUtil;
+	import fw2cybo.com.adobe.utils.DictionaryUtil;
 	import flash.utils.Dictionary;
 	/**
 	* ...

@@ -1,4 +1,4 @@
-package ru.arslanov.starling.extensions.krecha 
+package ru.arslanov.starling.extensions.krecha
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;

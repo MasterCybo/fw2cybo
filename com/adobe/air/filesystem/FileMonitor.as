@@ -30,14 +30,14 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.air.filesystem
+package fw2cybo.com.adobe.air.filesystem
 {
 	import flash.filesystem.File;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import com.adobe.air.filesystem.events.FileMonitorEvent;
+	import fw2cybo.com.adobe.air.filesystem.events.FileMonitorEvent;
 
 	/*
 		Todo:
@@ -49,24 +49,24 @@ package com.adobe.air.filesystem
 	/**
 	* Dispatched when the modified date of the file being modified changes.
 	*
-	* @eventType com.adobe.air.filesystem.events.FileMonitor.CHANGE
+	* @eventType fw2cybo.com.adobe.air.filesystem.events.FileMonitor.CHANGE
 	*/
-	[Event(name="CHANGE", type="com.adobe.air.filesystem.events.FileMonitor")]		
+	[Event(name="CHANGE", type="fw2cybo.com.adobe.air.filesystem.events.FileMonitor")]
 
 	/**
 	* Dispatched when the file being monitored is moved or deleted. The file 
 	* will be unwatched.
 	*
-	* @eventType com.adobe.air.filesystem.events.FileMonitor.MOVE
+	* @eventType fw2cybo.com.adobe.air.filesystem.events.FileMonitor.MOVE
 	*/
-	[Event(name="MOVE", type="com.adobe.air.filesystem.events.FileMonitor")]	
+	[Event(name="MOVE", type="fw2cybo.com.adobe.air.filesystem.events.FileMonitor")]
 	
 	/**
 	* Dispatched when the file being monitored is created.
 	*
-	* @eventType com.adobe.air.filesystem.events.FileMonitor.CREATE
+	* @eventType fw2cybo.com.adobe.air.filesystem.events.FileMonitor.CREATE
 	*/
-	[Event(name="CREATE", type="com.adobe.air.filesystem.events.FileMonitor")]			
+	[Event(name="CREATE", type="fw2cybo.com.adobe.air.filesystem.events.FileMonitor")]
 	
 	/**
 	* Class that monitors files for changes.

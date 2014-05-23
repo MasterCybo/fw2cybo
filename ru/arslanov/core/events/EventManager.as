@@ -2,9 +2,10 @@
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
+
 	import ru.arslanov.core.utils.Log;
+
 	/**
 	 * Менеджер подписчиков
 	 * @author Artem Arslanov

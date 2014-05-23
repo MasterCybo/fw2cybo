@@ -31,7 +31,7 @@
 */
 
 
-package com.adobe.webapis.events
+package fw2cybo.com.adobe.webapis.events
 {
 
 	import flash.events.Event;

@@ -30,13 +30,13 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.webapis
+package fw2cybo.com.adobe.webapis
 {
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.events.ProgressEvent;
 	
-	import com.adobe.net.DynamicURLLoader;
+	import fw2cybo.com.adobe.net.DynamicURLLoader;
 	
 		/**
 		*  	Dispatched when data is 
