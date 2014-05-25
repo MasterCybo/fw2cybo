@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.net
+package fw2cybo.com.adobe.net
 {
 	import flash.utils.ByteArray;
 	

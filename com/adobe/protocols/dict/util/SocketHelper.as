@@ -30,9 +30,9 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.protocols.dict.util
+package fw2cybo.com.adobe.protocols.dict.util
 {
-	import com.adobe.net.proxies.RFC2817Socket;
+	import fw2cybo.com.adobe.net.proxies.RFC2817Socket;
 	import flash.events.ProgressEvent;
 
 	public class SocketHelper

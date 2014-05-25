@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.protocols.dict.events
+package fw2cybo.com.adobe.protocols.dict.events
 {
 	import flash.events.Event;
 	

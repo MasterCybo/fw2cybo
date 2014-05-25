@@ -30,9 +30,9 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.crypto
+package fw2cybo.com.adobe.crypto
 {
-	import com.adobe.utils.IntUtil;
+	import fw2cybo.com.adobe.utils.IntUtil;
 	import flash.utils.ByteArray;
 	import mx.utils.Base64Encoder;
 	

@@ -30,10 +30,10 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.air.net
+package fw2cybo.com.adobe.air.net
 {
-	import com.adobe.crypto.MD5;
-	import com.adobe.net.DynamicURLLoader;
+	import fw2cybo.com.adobe.crypto.MD5;
+	import fw2cybo.com.adobe.net.DynamicURLLoader;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -44,7 +44,7 @@ package com.adobe.air.net
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
-	import com.adobe.air.net.events.ResourceCacheEvent;
+	import fw2cybo.com.adobe.air.net.events.ResourceCacheEvent;
 
 	//todo: add event metadata
 

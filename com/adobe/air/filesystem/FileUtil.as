@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.air.filesystem
+package fw2cybo.com.adobe.air.filesystem
 {
 	import flash.system.Capabilities;
 	import flash.filesystem.File;

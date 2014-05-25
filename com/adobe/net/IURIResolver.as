@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.net
+package fw2cybo.com.adobe.net
 {
 	/**
 	 * The URI class cannot know about DNS aliases, virtual hosts, or
@@ -40,12 +40,12 @@ package com.adobe.net
 	 * two aliases:
 	 * 
 	 * <p><code>
-	 *    http://www.site.com/
+	 *    http://www.site.fw2cybo.com/
 	 *    http://www.site.net/
 	 * </code></p>
 	 * 
 	 * <p>The application can provide an implementation that automatically
-	 * resolves site.net to site.com before URI compares two URI objects.
+	 * resolves site.net to site.fw2cybo.com before URI compares two URI objects.
 	 * Only the application can know and understand the context in which
 	 * the URI's are being used.</p>
 	 * 

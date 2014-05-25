@@ -30,7 +30,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.air.logging
+package fw2cybo.com.adobe.air.logging
 {
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;

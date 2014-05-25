@@ -1,6 +1,6 @@
 package starling.extensions.krecha 
 {
-	import com.adobe.utils.AGALMiniAssembler;
+	import fw2cybo.com.adobe.utils.AGALMiniAssembler;
 
 	import flash.display3D.*;
 	import flash.geom.*;

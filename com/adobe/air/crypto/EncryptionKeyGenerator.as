@@ -30,9 +30,9 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.air.crypto
+package fw2cybo.com.adobe.air.crypto
 {
-	import com.adobe.crypto.SHA256;
+	import fw2cybo.com.adobe.crypto.SHA256;
 	
 	import flash.data.EncryptedLocalStore;
 	import flash.utils.ByteArray;
@@ -49,9 +49,9 @@ package com.adobe.air.crypto
 	 * In some situations you may also want to use per-user encryption for data even 
 	 * if the application design specifies that other users can access the data. For more 
 	 * information, see 
-	 * "<a href="http://help.adobe.com/en_US/AIR/1.5/devappsflex/WS34990ABF-C893-47ec-B813-9C9D9587A398.html">Considerations for using encryption with a database</a>" 
+	 * "<a href="http://help.adobe.fw2cybo.com/en_US/AIR/1.5/devappsflex/WS34990ABF-C893-47ec-B813-9C9D9587A398.html">Considerations for using encryption with a database</a>"
 	 * in the guide 
-	 * "<a href="http://help.adobe.com/en_US/AIR/1.5/devappsflex/">Developing Adobe AIR Applications with Flex</a>."</p>
+	 * "<a href="http://help.adobe.fw2cybo.com/en_US/AIR/1.5/devappsflex/">Developing Adobe AIR Applications with Flex</a>."</p>
 	 * 
 	 * <p>The generated encryption key is based on a password that you provide. For any given 
 	 * password, in the same AIR application 
@@ -83,9 +83,9 @@ package com.adobe.air.crypto
 	 * 
 	 * <p>For more information about data security, and an explanation of the security techniques 
 	 * used in the EncryptionKeyGenerator class, see 
-	 * "<a href="http://help.adobe.com/en_US/AIR/1.5/devappsflex/WS61068DCE-9499-4d40-82B8-B71CC35D832C.html">Example: Generating and using an encryption key</a>" 
+	 * "<a href="http://help.adobe.fw2cybo.com/en_US/AIR/1.5/devappsflex/WS61068DCE-9499-4d40-82B8-B71CC35D832C.html">Example: Generating and using an encryption key</a>"
 	 * in the guide 
-	 * "<a href="http://help.adobe.com/en_US/AIR/1.5/devappsflex/">Developing Adobe AIR Applications with Flex</a>."</p>
+	 * "<a href="http://help.adobe.fw2cybo.com/en_US/AIR/1.5/devappsflex/">Developing Adobe AIR Applications with Flex</a>."</p>
 	 */
 	public class EncryptionKeyGenerator
 	{
@@ -98,7 +98,7 @@ package com.adobe.air.crypto
 		public static const ENCRYPTED_DB_PASSWORD_ERROR_ID:uint = 3138;
 		
 		private static const STRONG_PASSWORD_PATTERN:RegExp = /(?=^.{8,32}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
-		private static const SALT_ELS_KEY:String = "com.adobe.air.crypto::EncryptedDBSalt$$$";
+		private static const SALT_ELS_KEY:String = "fw2cybo.com.adobe.air.crypto::EncryptedDBSalt$$$";
 		
 		
 		// ------- Constructor -------
@@ -162,9 +162,9 @@ package com.adobe.air.crypto
 		 * 
 		 * <p>For more information about data security, and an explanation of the security techniques 
 		 * used in the EncryptionKeyGenerator class, see 
-		 * "<a href="http://help.adobe.com/en_US/AIR/1.5/devappsflex/WS61068DCE-9499-4d40-82B8-B71CC35D832C.html">Example: Generating and using an encryption key</a>" 
+		 * "<a href="http://help.adobe.fw2cybo.com/en_US/AIR/1.5/devappsflex/WS61068DCE-9499-4d40-82B8-B71CC35D832C.html">Example: Generating and using an encryption key</a>"
 		 * in the guide 
-		 * "<a href="http://help.adobe.com/en_US/AIR/1.5/devappsflex/">Developing Adobe AIR Applications with Flex</a>."</p>
+		 * "<a href="http://help.adobe.fw2cybo.com/en_US/AIR/1.5/devappsflex/">Developing Adobe AIR Applications with Flex</a>."</p>
 		 * 
 		 * @param password	The password to use to generate the encryption key.
 		 * @param overrideSaltELSKey	The EncryptionKeyGenerator creates and stores a random value 

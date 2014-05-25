@@ -30,29 +30,29 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.air.filesystem
+package fw2cybo.com.adobe.air.filesystem
 {
 	import flash.events.EventDispatcher;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
-	import com.adobe.air.filesystem.events.FileMonitorEvent;
-	import com.adobe.utils.ArrayUtil;
+	import fw2cybo.com.adobe.air.filesystem.events.FileMonitorEvent;
+	import fw2cybo.com.adobe.utils.ArrayUtil;
 
 	/**
 	* Dispatched when a volume is added to the system.
 	*
-	* @eventType com.adobe.air.filesystem.events.FileMonitor.ADD_VOLUME
+	* @eventType fw2cybo.com.adobe.air.filesystem.events.FileMonitor.ADD_VOLUME
 	*/
-	[Event(name="ADD_VOLUME", type="com.adobe.air.filesystem.events.FileMonitor")]	
+	[Event(name="ADD_VOLUME", type="fw2cybo.com.adobe.air.filesystem.events.FileMonitor")]
 
 	/**
 	* Dispatched when a volume is removed from the system.
 	*
-	* @eventType com.adobe.air.filesystem.events.FileMonitor.REMOVE_VOLUME
+	* @eventType fw2cybo.com.adobe.air.filesystem.events.FileMonitor.REMOVE_VOLUME
 	*/
-	[Event(name="REMOVE_VOLUME", type="com.adobe.air.filesystem.events.FileMonitor")]	
+	[Event(name="REMOVE_VOLUME", type="fw2cybo.com.adobe.air.filesystem.events.FileMonitor")]
 
 	/**
 	 * Class that monitors changes to the File volumes attached to the operating
