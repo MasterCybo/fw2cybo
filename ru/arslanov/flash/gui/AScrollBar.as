@@ -187,7 +187,7 @@ package ru.arslanov.flash.gui
 		 */
 		private function checkThumbVisible():void
 		{
-			var vis:Boolean = _range > _maskSize;
+			var vis:Boolean = ( _range + 2*overhang ) > _maskSize;
 
 			if ( vis == super.getThumb().visible ) return;
 

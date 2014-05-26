@@ -1,6 +1,9 @@
 package ru.arslanov.core.external {
 	import flash.display.LoaderInfo;
 	import flash.display.Stage;
+
+	import ru.arslanov.core.utils.Log;
+
 	/**
 	 * Статический класс для комфортной работы с Flash Vars
 	 * @author Artem Arslanov
