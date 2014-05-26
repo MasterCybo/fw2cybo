@@ -3,7 +3,7 @@ package ru.arslanov.flash.gui.buttons {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import ru.arslanov.flash.display.MovieClipContainer;
+	import ru.arslanov.flash.display.AMovieClipContainer;
 	
 	/**
 	 * ...
@@ -19,7 +19,7 @@ package ru.arslanov.flash.gui.buttons {
 		
 		private var _state:String = null;
 		private var _isOver:Boolean = false;
-		private var _body:MovieClipContainer;
+		private var _body:AMovieClipContainer;
 		private var _skin:ButtonSkinBase;
 		private var _enabled:Boolean;
 		
@@ -32,7 +32,7 @@ package ru.arslanov.flash.gui.buttons {
 		override public function init():* {
 			if ( !skin.upState ) skin.init();
 			
-			_body = _skin.upState as MovieClipContainer;
+			_body = _skin.upState as AMovieClipContainer;
 			addChild( _body );
 			
 			mouseChildren = false;
