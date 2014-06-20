@@ -123,9 +123,14 @@ package ru.arslanov.flash.display {
 		public function get uidStr():String {
 			return "0x" + uid.toString( 16 ).toUpperCase();
 		}
+
+		public function getClassName():String
+		{
+			return getQualifiedClassName( this ).split( ":" ).pop();
+		}
 		
 		override public function toString():String {
-			return "[" + getQualifiedClassName( this ).split( ":" ).pop() + " " + uidStr + "]";
+			return "[" + getClassName() + " " + uidStr + "]";
 		}
 		
 		public function toStringGeometry():String {

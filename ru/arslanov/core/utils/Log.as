@@ -97,7 +97,7 @@ package ru.arslanov.core.utils {
 			var date:Date = new Date();
 			var time:String = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "." + getTimer() + ": ";
 			var str:String = prefix + data.join( ", " );
-			
+
 			if( _customTrace != null ){
 				_customTrace( time + str );
 			}
@@ -109,7 +109,6 @@ package ru.arslanov.core.utils {
 			}
 			
 			if ( !_trace ) return;
-			
 			
 			trace( time + str );
 		}
