@@ -86,7 +86,7 @@
 			_collection = new Dictionary( true );
 		}
 		
-		public function kill():void {
+		public function dispose():void {
 			_list.length = 0;
 			_list = null;
 			_collection = null;

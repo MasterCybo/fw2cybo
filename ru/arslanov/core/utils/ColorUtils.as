@@ -18,5 +18,18 @@ package ru.arslanov.core.utils
 
 			return (alpha * 0xff000000) + 0xff0000;
 		}
+
+		public static function rgbToHex( red:int, green:int, blue:int):uint
+		{
+			red = Math.max(-255, Math.min( red, 255));
+			green = Math.max(-255, Math.min( green, 255));
+			blue = Math.max(-255, Math.min( blue, 255));
+			return red << 16 | green << 8 | blue;
+		}
+
+		public static function hexToRgb( hexColor:uint):Object
+		{
+			return { red:hexColor >> 16, green:hexColor >> 8 & 0xFF, blue:hexColor & 0xFF };
+		}
 	}
 }

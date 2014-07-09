@@ -1,22 +1,35 @@
 package ru.arslanov.core.collection {
-	import fw2cybo.com.adobe.utils.DictionaryUtil;
+	import com.adobe.utils.DictionaryUtil;
 	import flash.utils.Dictionary;
 	/**
-	* ...
+	* Расширенный класс словаря
 	* @author Artem Arslanov
 	*/
-	public class SimpleMap {
+	public dynamic class AMap extends Dictionary {
 		
 		private var _map:Dictionary = new Dictionary( true );
 		private var _len:uint;
 		
-		public function SimpleMap() {
-			
+		public function AMap() {
+			super();
+			this.constructor.prototype.cdcd = function():void {
+				trace("asdasdasd");
+			}
 		}
 		
 		public function addValue( key:*, value:* ):void {
+			if ( !key || !value ) return;
+			
 			_map[key] = value;
 			_len++;
+		}
+		
+		public function removeValue( key:* ):void {
+			if ( !key ) return;
+			if ( !_map[key] ) return;
+			
+			delete _map[key];
+			_len--;
 		}
 		
 		public function getValue( key:* ):* {
@@ -40,8 +53,7 @@ package ru.arslanov.core.collection {
 		}
 		
 		public function dispose():void {
-			_map = new Dictionary( true );
-			_len = 0;
+			_map = null;
 		}
 	}
 

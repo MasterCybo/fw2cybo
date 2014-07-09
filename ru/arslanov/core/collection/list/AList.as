@@ -17,14 +17,12 @@ package ru.arslanov.core.collection.list
 		public static const SORT_RETURNINDEXEDARRAY:Number = 8;
 		public static const SORT_NUMERIC:Number = 16;
 
-		private var _list:Vector.<Object>;
+		private var _list:Vector.<Object> = new Vector.<Object>();
 		private var _sortBehavior:*;
 		private var _sortRecursive:Boolean = false;
 
 		public function AList( sortIndex:Number = 0, data:Object = null )
 		{
-			_list = new Vector.<Object>();
-
 			super( sortIndex, data );
 		}
 
@@ -216,7 +214,7 @@ package ru.arslanov.core.collection.list
 		}
 
 		public function dispose():void {
-			_list.length = 0;
+			_list = null;
 			_sortBehavior = null;
 		}
 	}
