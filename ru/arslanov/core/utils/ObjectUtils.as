@@ -6,6 +6,11 @@ package ru.arslanov.core.utils {
 	*/
 	public class ObjectUtils {
 		
+		/**
+		 * Клонирует объект с помощью ByteArray
+		 * @param	target
+		 * @return
+		 */
 		static public function clone( target:* ):* {
 			var bytes:ByteArray = new ByteArray();
 			bytes.writeObject( target );
