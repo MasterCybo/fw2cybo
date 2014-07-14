@@ -7,7 +7,7 @@ package ru.arslanov.core.utils {
 	public class JDUtils {
 		
 		static public const MIN_YEAR:int = -4713; // 
-		static public const DAYS_PER_YEAR:Number = 365.25; // Количество дней в году
+		static public const DAYS_PER_YEAR:Number = 365.25; // Количество дней в Юлианском году
 		
 		static public var weekdaysLocale:Array = [ "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье" ];
 		static public var monthsLocale:Array = [ "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря" ];
