@@ -164,13 +164,21 @@ package ru.arslanov.core.utils {
 		static public function getFormatString( jd:Number, formatString:String = "{2} {1} {0}, {4}:{5}" ):String { // –
 			var date:Object = JDToDate( jd );
 			
-			return StringUtils.substitute( formatString
-										, date.year // {0}
-										, getNameMonth( date.month ) // {1}
-										, StringUtils.numberToString( date.date ) // {2}
-										, getNameWeekday(date.weekday) // {3}
-										, StringUtils.numberToString( date.hours ) // {4}
-										, StringUtils.numberToString( date.minutes ) ); // {5}
+			var str:String = "";
+			
+			if ( formatString && formatString != "" ) {
+				str = StringUtils.substitute( formatString
+						, date.year // {0}
+						, getNameMonth( date.month ) // {1}
+						, StringUtils.numberToString( date.date ) // {2}
+						, getNameWeekday(date.weekday) // {3}
+						, StringUtils.numberToString( date.hours ) // {4}
+						, StringUtils.numberToString( date.minutes ) ); // {5}
+			} else {
+				str = "" + jd;
+			}
+			
+			return str;
 		}
 		
 		/**
