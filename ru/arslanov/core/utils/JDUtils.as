@@ -111,18 +111,25 @@ package ru.arslanov.core.utils {
 		 */
 		static public function JDToDate( jd:Number ):Object {
 			var a:Number = jd + 32044 - 0.5;
-			var b:Number = Math.floor(( 4 * a + 3 ) / 146097 );
-			var c:Number = a - Math.floor( 146097 * b / 4 );
-			var d:Number = Math.floor(( 4 * c + 3 ) / 1461 );
-			var e:Number = c - Math.floor( 1461 * d / 4 );
-			var m:Number = Math.floor(( 5 * e + 2 ) / 153 );
+			var b:Number = int(( 4 * a + 3 ) / 146097 );
+			var c:Number = a - int( 146097 * b / 4 );
+			var d:Number = int(( 4 * c + 3 ) / 1461 );
+			var e:Number = c - int( 1461 * d / 4 );
+			var m:Number = int(( 5 * e + 2 ) / 153 );
 			
-			var date:Number =  Math.round( e - ( 153 * m + 2 ) / 5 ) + 1;
-			var month:Number = m + 3 - 12 * Math.floor( m / 10 );
-			var year:Number = 100 * b + d - 4800 + Math.floor( m / 10 );
+			var date:Number = int( e - ( 153 * m + 2 ) / 5 + 1 );
+			
+//			Log.traceText( "1 date : " + date );
+
+//			date = uint( date );
+
+//			Log.traceText( "\t2 date : " + date );
+			
+			var month:Number = m + 3 - 12 * int( m / 10 );
+			var year:Number = 100 * b + d - 4800 + int( m / 10 );
 			
 			var jd2:Number = jd + 0.5;
-			var time:Number = jd2 % Math.floor( jd2 );
+			var time:Number = jd2 % int( jd2 );
 			
 			//Log.traceText( "time : " + time );
 			
@@ -130,7 +137,7 @@ package ru.arslanov.core.utils {
 			var minutes:uint = (time * 1440) % 60;
 			var seconds:uint = (time * 86400) % 60;
 			
-			var weekday:uint = ( Math.floor( jd + 0.5 ) + 1 ) % 7; // 0-воскресенье, 1-понедельник, 2-вторник и т.д.
+			var weekday:uint = ( int( jd + 0.5 ) + 1 ) % 7; // 0-воскресенье, 1-понедельник, 2-вторник и т.д.
 			
 			//_cachedDateJD.year = year;
 			//_cachedDateJD.month = month;
