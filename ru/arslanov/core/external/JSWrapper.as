@@ -18,7 +18,7 @@ package ru.arslanov.core.external {
 		}
 		
 		static private function get checkAvailable():Boolean {
-			if ( !availability ) Log.traceError( "ExternalInterface not available!" )
+			if ( !availability ) Log.traceError( "ExternalInterface not available!" );
 			
 			return availability;
 		}

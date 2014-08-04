@@ -87,11 +87,7 @@ package ru.arslanov.flash.gui {
 			Log.traceText( "_list.height : " + _list.height );
 			Log.traceText( "_scrollRect : " + _scrollRect );
 			
-			if ( _list.height < _scrollRect.height ) {
-				_scroller.visible = false;
-			} else {
-				_scroller.visible = true;
-			}
+			_scroller.visible = _list.height > _scrollRect.height;
 			
 			_thumb.height = Math.max( _scrollRect.height * _scrollRect.height / _list.height, _minHThumb );
 			

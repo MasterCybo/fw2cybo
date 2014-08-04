@@ -30,7 +30,7 @@ package ru.arslanov.core.utils {
 		
 		public function left( obj:* ):uint {
 			_idx = Math.max( 0, _idx - 1 );
-			_objects.splice( idx, 0, obj )
+			_objects.splice( idx, 0, obj );
 			
 			return _idx;
 		}

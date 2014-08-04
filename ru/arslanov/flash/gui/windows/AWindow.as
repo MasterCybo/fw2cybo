@@ -130,7 +130,7 @@ package ru.arslanov.flash.gui.windows {
 					break;
 					case "rightTop":
 						super.x = int( Display.stageWidth - width );
-						super.y = 0
+						super.y = 0;
 					break;
 					case "leftBottom":
 						super.x = 0;
