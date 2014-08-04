@@ -3,9 +3,12 @@ package ru.arslanov.flash.utils {
 	import flash.desktop.ClipboardFormats;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.text.TextFormat;
+
+	import ru.arslanov.core.controllers.KeyController;
 	import ru.arslanov.core.external.SOManager;
 	import ru.arslanov.flash.display.ASprite;
 	import ru.arslanov.flash.text.ATextField;
@@ -23,7 +26,8 @@ package ru.arslanov.flash.utils {
 		
 		static public var autoClearNumLines:uint = 1000;
 		
-		static private var _container:DisplayObjectContainer;
+		static private var _host:DisplayObjectContainer;
+		static private var _keyCtrl:KeyController;
 		static private var _body:ASprite;
 		static private var _bg:ASprite;
 		static private var _tf:ATextField;
@@ -34,7 +38,7 @@ package ru.arslanov.flash.utils {
 		static private var _btnSide:ASprite;
 		
 		static public function init( container:DisplayObjectContainer, position:String = "right" ):void {
-			_container = container;
+			_host = container;
 			_position = position;
 			
 			_clipboard = Clipboard.generalClipboard;
@@ -66,9 +70,9 @@ package ru.arslanov.flash.utils {
 			
 			_body.visible = _btnEdit.visible = _btnSide.visible = false;
 			
-			_container.addChild( _body );
-			_container.addChild( _btnEdit );
-			_container.addChild( _btnSide );
+			_host.addChild( _body );
+			_host.addChild( _btnEdit );
+			_host.addChild( _btnSide );
 			
 			updateSize();
 			
@@ -80,11 +84,19 @@ package ru.arslanov.flash.utils {
 			Display.root.addEventListener( TouchEvent.TOUCH_END, hrTouchEnd );
 			Display.root.addEventListener( TouchEvent.TOUCH_TAP, hrTouchTap );
 			
+			_keyCtrl = new KeyController( Display.stage );
+			_keyCtrl.bindChar( "L", hrKeyUp );
+			
 			var isVis:Boolean = SOManager.getBoolean( "loggerView" );
 			
 			if ( isVis ) {
 				visible = true;
 			}
+		}
+
+		private static function hrKeyUp( ev:KeyboardEvent ):void
+		{
+			visible = !visible;
 		}
 		
 		static private function onClickSide( ev:MouseEvent ):void {
@@ -220,9 +232,9 @@ package ru.arslanov.flash.utils {
 		}
 		
 		static private function toTop():void {
-			_container.setChildIndex( _body, _container.numChildren - 1 );
-			_container.setChildIndex( _btnEdit, _container.numChildren - 1 );
-			_container.setChildIndex( _btnSide, _container.numChildren - 1 );
+			_host.setChildIndex( _body, _host.numChildren - 1 );
+			_host.setChildIndex( _btnEdit, _host.numChildren - 1 );
+			_host.setChildIndex( _btnSide, _host.numChildren - 1 );
 		}
 	}
 
