@@ -110,20 +110,38 @@ package ru.arslanov.core.utils {
 		 * @return	Object { year:Number, month:Number, date:Number, weekday:Number, hours:hours, minutes:minutes, seconds:seconds }
 		 */
 		static public function JDToDate( jd:Number ):Object {
-			var a:Number = jd + 32044 - 0.5;
-			var b:Number = int(( 4 * a + 3 ) / 146097 );
-			var c:Number = a - int( 146097 * b / 4 );
-			var d:Number = int(( 4 * c + 3 ) / 1461 );
-			var e:Number = c - int( 1461 * d / 4 );
-			var m:Number = int(( 5 * e + 2 ) / 153 );
-			
-			var date:Number = int( e - ( 153 * m + 2 ) / 5 + 1 );
-			
-//			Log.traceText( "1 date : " + date );
+			var fjd:Number = Math.floor(jd);
+			var x:Number = int((fjd - 1867216.25) / 36524.25);
+			var n1:Number = fjd + 1 + x - int(x / 4.0);
+			var n2:Number = n1 + 1524;
+			var n3:Number = int((n2 - 122.1) / 365.25);
+			var n4:Number = int(365.25 * n3);
+			var n5:Number = int((n2 - n4) / 30.6001);
+			var date:Number = n2 - n4 - int(30.6001 * n5);
+			var month:Number = (n5 < 13.5) ? n5 - 1 : n5 - 13;
+			var year:Number = (month > 2.5) ? n3 - 4716 : n3 - 4715;
 
-//			date = uint( date );
+			var time:Number = jd - fjd + 0.5;
 
-//			Log.traceText( "\t2 date : " + date );
+			//Log.traceText( "time : " + time );
+
+			var hours:int = time * 24;
+			var minutes:int = (time * 1440) % 60;
+			var seconds:int = (time * 86400) % 60;
+
+			var weekday:uint = ( int( jd + 0.5 ) + 1 ) % 7; // 0-воскресенье, 1-понедельник, 2-вторник и т.д.
+
+			return { year:year, month:month, date:date, weekday:weekday, hours:hours, minutes:minutes, seconds:seconds };
+		}
+		/*static public function JDToDate( jd:Number ):Object {
+			var a:Number = jd + 32044;// + 0.5;
+			var b:Number = Math.floor(( 4 * a + 3 ) / 146097 );
+			var c:Number = a - Math.floor( 146097 * b / 4 );
+			var d:Number = Math.floor(( 4 * c + 3 ) / 1461 );
+			var e:Number = c - Math.floor( 1461 * d / 4 );
+			var m:Number = Math.floor(( 5 * e + 2 ) / 153 );
+			
+			var date:Number = Math.round(e - Math.floor(( 153 * m + 2 ) / 5) + 1);
 			
 			var month:Number = m + 3 - 12 * int( m / 10 );
 			var year:Number = 100 * b + d - 4800 + int( m / 10 );
@@ -139,18 +157,8 @@ package ru.arslanov.core.utils {
 			
 			var weekday:uint = ( int( jd + 0.5 ) + 1 ) % 7; // 0-воскресенье, 1-понедельник, 2-вторник и т.д.
 			
-			//_cachedDateJD.year = year;
-			//_cachedDateJD.month = month;
-			//_cachedDateJD.date = date;
-			//_cachedDateJD.weekday = weekday;
-			//_cachedDateJD.hours = hours;
-			//_cachedDateJD.minutes = minutes;
-			//_cachedDateJD.seconds = seconds;
-			
-			//return _cachedDateJD;
-			
 			return { year:year, month:month, date:date, weekday:weekday, hours:hours, minutes:minutes, seconds:seconds };
-		}
+		}*/
 		
 		static public function getNameMonth( numMonth:uint ):String {
 			//trace( "*execute* DateUtils.getNameMonth" );
@@ -184,6 +192,8 @@ package ru.arslanov.core.utils {
 			} else {
 				str = "" + jd;
 			}
+			
+			trace(jd + " = " + str);
 			
 			return str;
 		}
