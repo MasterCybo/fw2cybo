@@ -117,7 +117,7 @@ package ru.arslanov.core.utils
 		 */
 		static public function getFormatString( jd:Number, template:String = "{2} {1} {0}, {4}:{5}" ):String
 		{
-			// –
+			// – дефис
 			var date:Object = JDToGregorian( jd );
 			
 			var str:String = "";
@@ -134,7 +134,7 @@ package ru.arslanov.core.utils
 				str = "" + jd;
 			}
 			
-			trace( jd + " = " + str );
+//			trace( jd + " = " + str );
 			
 			return str;
 		}
