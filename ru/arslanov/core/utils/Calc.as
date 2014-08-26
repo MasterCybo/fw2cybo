@@ -168,5 +168,14 @@
 		static public function lg( val:Number ):Number {
 			return log( 2, val );
 		}
+
+		/**
+		 * Логарифм натуральный (по основанию E)
+		 * @param	val
+		 * @return
+		 */
+		static public function ln( val:Number ):Number {
+			return log( Math.E, val );
+		}
 	}
 }
