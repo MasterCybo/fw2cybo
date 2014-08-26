@@ -14,7 +14,10 @@ package ru.arslanov.core.http {
 	 * @author Artem Arslanov
 	 */
 	public class HTTPManager {
-		
+
+		public static var verbose:Boolean = false;
+		public static var verboseUnimportant:Boolean = true;
+
 		private var _domain:String = "";
 		private var _queue:Vector.<HTTPRequest> = new Vector.<HTTPRequest>();
 		private var _dataRequests:Dictionary/*URLLoader:DataRequest*/ = new Dictionary( true );
@@ -33,9 +36,11 @@ package ru.arslanov.core.http {
 			//Log.traceText( "domain == null : " + (domain == null) );
 			
 			_serverIsAvailable = (domain != null) && (domain != "") && (( new LocalConnection() ).domain != "localhost");
-			
-			Log.traceText( "_serverIsAvailable : " + _serverIsAvailable );
-			Log.traceText( "Create HTTPManager : " + _domain );
+
+			if ( !verboseUnimportant ) {
+				Log.traceText( "_serverIsAvailable : " + _serverIsAvailable );
+				Log.traceText( "Create HTTPManager : " + _domain );
+			}
 		}
 		
 		/***************************************************************************
@@ -69,7 +74,7 @@ package ru.arslanov.core.http {
 			var httpRequest:HTTPRequest = dataRequest.httpRequest;
 			
 			var req:URLRequest = new URLRequest();
-			Log.traceText( "req.requestHeaders : " + req.requestHeaders );
+//			Log.traceText( "req.requestHeaders : " + req.requestHeaders );
 			//req.requestHeaders.push( new URLRequestHeader( "Cache-Control", "no-store, must-revalidate, max-age=0" ) );
 			req.requestHeaders.push( new URLRequestHeader( "Cache-Control", "no-store" ) );
 			req.requestHeaders.push( new URLRequestHeader( "Pragma", "no-cache") );
@@ -83,9 +88,9 @@ package ru.arslanov.core.http {
 					req.data = httpRequest.vars;
 				}
 			}
-			
-			Log.traceNetSend( "Send " + httpRequest + " : " + req.url + ( httpRequest.vars == null ? "" : "?" + unescape( httpRequest.vars.toString() ) ) );
-			
+
+			if ( !verbose ) Log.traceNetSend( "Send " + httpRequest + " : " + req.url + ( httpRequest.vars == null ? "" : "?" + unescape( httpRequest.vars.toString() ) ) );
+
 			_dataRequests[loader] = dataRequest;
 			
 			loader.load( req );
@@ -102,7 +107,7 @@ package ru.arslanov.core.http {
 		private function onSecurityError( ev:SecurityErrorEvent ):void {
 			var loader:URLLoader = ev.target as URLLoader;
 			var dataRequest:DataRequest = _dataRequests[loader];
-			
+
 			Log.traceError( "HTTPManager: " + dataRequest.httpRequest + " Security Error: " + ev );
 			
 			callError( ev.target as URLLoader );
@@ -117,14 +122,14 @@ package ru.arslanov.core.http {
 				//message += ". Сервер не работает или не отвечает."
 				message += ". Запрос по адресу altURL : " + dataRequest.httpRequest.altURL;
 			}
-			
-			Log.traceNetAnswer( "HTTPManager: " + dataRequest.httpRequest + " : " + message );
+
+			if ( !verboseUnimportant ) Log.traceNetAnswer( "HTTPManager: " + dataRequest.httpRequest + " : " + message );
 		}
 		
 		private function onIOError( ev:IOErrorEvent ):void {
 			var loader:URLLoader = ev.target as URLLoader;
 			var dataRequest:DataRequest = _dataRequests[loader];
-			
+
 			Log.traceError( "HTTPManager: " + dataRequest.httpRequest + " : IO Error: " + ev.text );
 			
 			callError( ev.target as URLLoader );
@@ -136,8 +141,8 @@ package ru.arslanov.core.http {
 			var dataRequest:DataRequest = _dataRequests[loader];
 			
 			if ( !dataRequest ) return;
-			
-			Log.traceNetAnswer( "Response " + dataRequest.httpRequest );
+
+			if ( !verbose ) Log.traceNetAnswer( "Response " + dataRequest.httpRequest );
 			
 			var f:Function = dataRequest.callbackSuccessful;
 			if ( f != null ) {

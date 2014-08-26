@@ -5,11 +5,11 @@ package ru.arslanov.flash.gui.hints {
 	 * ...
 	 * @author Artem Arslanov
 	 */
-	public class AHint extends ASprite {
+	public class ATooltip extends ASprite {
 		
 		protected var _data:Object;
 		
-		public function AHint( data:Object = null ) {
+		public function ATooltip( data:Object = null ) {
 			_data = data;
 			super();
 		}

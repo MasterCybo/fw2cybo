@@ -7,23 +7,23 @@ package ru.arslanov.flash.gui.hints {
 	 * ...
 	 * @author Artem Arslanov
 	 */
-	public class AHintManager {
+	public class ATooltipManager {
 		
 		/***************************************************************************
 		Инициализация синглтона
 		***************************************************************************/
-		private static var _instance:AHintManager;
+		private static var _instance:ATooltipManager;
 		
-		public static function get me():AHintManager {
+		public static function get me():ATooltipManager {
 			if ( _instance == null ) {
-				_instance = new AHintManager( new PrivateKey() );
+				_instance = new ATooltipManager( new PrivateKey() );
 			}
 			return _instance;
 		}
 		
-		public function AHintManager( key:PrivateKey ):void {
+		public function ATooltipManager( key:PrivateKey ):void {
 			if ( !key ) {
-				throw new Error( "Error: Instantiation failed: Use AHintManager.instance instead of new." );
+				throw new Error( "Error: Instantiation failed: Use ATooltipManager.instance instead of new." );
 			}
 		}
 		
@@ -34,7 +34,7 @@ package ru.arslanov.flash.gui.hints {
 		public var offsetY:int = 0;
 		
 		private var _container:DisplayObjectContainer;
-		private var _hint:AHint;
+		private var _hint:ATooltip;
 		
 		public function init( container:DisplayObjectContainer, offsetX:int = 5, offsetY:int = 5 ):void {
 			_container = container;
@@ -83,7 +83,7 @@ package ru.arslanov.flash.gui.hints {
 			_hint.y = yp - _hint.height;
 		}
 		
-		public function get currentHint():AHint {
+		public function get currentHint():ATooltip {
 			return _hint;
 		}
 	}

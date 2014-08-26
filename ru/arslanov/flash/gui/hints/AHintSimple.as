@@ -6,7 +6,7 @@ package ru.arslanov.flash.gui.hints {
 	 * ...
 	 * @author Artem Arslanov
 	 */
-	public class AHintSimple extends AHint {
+	public class AHintSimple extends ATooltip {
 		
 		private var _text:String;
 		
