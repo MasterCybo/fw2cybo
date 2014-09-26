@@ -1,4 +1,4 @@
-package ru.arslanov.core.events {
+package ru.arslanov.core.notifications {
 	/**
 	 * ...
 	 * @author Artem Arslanov
