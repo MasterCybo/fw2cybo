@@ -39,7 +39,7 @@ package ru.arslanov.flash.utils {
 		public function set pivotX( value:Number ):void {
 			_pivotPoint.x = value;
 			
-			updateMatrix();
+			applyTransformMatrix();
 		}
 		
 		public function get pivotX():Number {
@@ -49,14 +49,14 @@ package ru.arslanov.flash.utils {
 		public function set pivotY( value:Number ):void {
 			_pivotPoint.y = value;
 			
-			updateMatrix();
+			applyTransformMatrix();
 		}
 		
 		public function get pivotY():Number {
 			return _pivotPoint.y;
 		}
 		
-		private function updateMatrix():void {
+		private function applyTransformMatrix():void {
 			const matrix:Matrix = new Matrix();
 			
 			matrix.identity();
@@ -76,7 +76,7 @@ package ru.arslanov.flash.utils {
 		
 		public function set rotation( value:Number ):void {
 			_rotation = value;
-			updateMatrix();
+			applyTransformMatrix();
 		}
 		
 		/***************************************************************************
@@ -90,7 +90,7 @@ package ru.arslanov.flash.utils {
 		
 		public function set scale( value:Number ):void {
 			_scale = _scaleX = _scaleY = value;
-			updateMatrix();
+			applyTransformMatrix();
 		}
 		
 		/***************************************************************************
@@ -102,7 +102,7 @@ package ru.arslanov.flash.utils {
 		
 		public function set scaleX( value:Number ):void {
 			_scaleX = value;
-			updateMatrix();
+			applyTransformMatrix();
 		}
 		
 		public function get scaleY():Number {
@@ -111,7 +111,7 @@ package ru.arslanov.flash.utils {
 		
 		public function set scaleY( value:Number ):void {
 			_scaleY = value;
-			updateMatrix();
+			applyTransformMatrix();
 		}
 		
 		public function dispose():void {

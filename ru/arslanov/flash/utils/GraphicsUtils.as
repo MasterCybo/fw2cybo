@@ -7,10 +7,6 @@ package ru.arslanov.flash.utils {
 	 */
 	public class GraphicsUtils {
 		
-		public function GraphicsUtils() {
-		
-		}
-		
 		static public function drawDash( target:Graphics, x1:Number, y1:Number, x2:Number, y2:Number, dashLength:Number = 5, spaceLength:Number = 5 ):void {
 			var x:Number = x2 - x1;
 			var y:Number = y2 - y1;
