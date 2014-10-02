@@ -1,6 +1,7 @@
 package ru.arslanov.core.enum
 {
 	import flash.utils.describeType;
+	import flash.utils.getQualifiedClassName;
 	
 	/**
 	 * Перечисляемый тип - базовый класс
@@ -55,7 +56,15 @@ package ru.arslanov.core.enum
 			
 			return elements;
 		}
-	
+		
+		protected function getClassName():String
+		{
+			return getQualifiedClassName( this ).split( ":" ).pop();
+		}
+		
+		public function toString():String {
+			return "[" + getClassName() + " " + value + "]";
+		}
 	}
 
 }
