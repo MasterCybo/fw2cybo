@@ -1,3 +1,4 @@
+import ru.terranova.game.Version;
 package 
 {
   public final class Version

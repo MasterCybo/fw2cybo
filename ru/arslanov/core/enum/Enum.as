@@ -17,6 +17,15 @@ package ru.arslanov.core.enum
 			value = val;
 		}
 		
+		protected function getClassName():String
+		{
+			return getQualifiedClassName( this ).split( ":" ).pop();
+		}
+		
+		public function toString():String {
+			return "[" + getClassName() + " " + value + "]";
+		}
+		
 		/***************************************************************************
 		   Static methods
 		 ***************************************************************************/
@@ -57,14 +66,6 @@ package ru.arslanov.core.enum
 			return elements;
 		}
 		
-		protected function getClassName():String
-		{
-			return getQualifiedClassName( this ).split( ":" ).pop();
-		}
-		
-		public function toString():String {
-			return "[" + getClassName() + " " + value + "]";
-		}
 	}
 
 }
