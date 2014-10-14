@@ -33,19 +33,13 @@ package ru.arslanov.core.external {
 			customInit();
 			
 			_so.data[varName] = value;
-			
-			try {
-				_so.flush();
-			} catch ( err:Error ) {
-				Log.traceError( err );
-			}
 		}
 		
 		static public function getVar( varName:String, defaultValue:* = null ):* {
 			customInit();
 			
 			var value:* = _so.data[varName];
-			return value ? value : defaultValue;
+			return value != undefined ? value : defaultValue;
 		}
 		
 		static public function getString( varName:String, defaultValue:String = "" ):String {
@@ -63,6 +57,14 @@ package ru.arslanov.core.external {
 		
 		static public function getData():Object {
 			return _so.data;
+		}
+		
+		static public function save():void {
+			try {
+				_so.flush();
+			} catch ( err:Error ) {
+				Log.traceError( err );
+			}
 		}
 		
 		static public function clear():void {

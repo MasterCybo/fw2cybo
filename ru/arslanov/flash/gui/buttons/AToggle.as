@@ -16,9 +16,9 @@ package ru.arslanov.flash.gui.buttons {
 		private var _over:IKillable;
 		private var _isChecked:Boolean = false;
 		
-		public function AToggle( skinUp:IKillable = null, skinOver:IKillable = null, skinDown:IKillable = null, skinDownOver:IKillable = null, label:IKillable = null ) {
+		public function AToggle( textLabel:String = "AToggle", skinDownOver:IKillable = null ) {
 			this.skinDownOver = skinDownOver;
-			super( skinUp, skinOver, skinDown, label );
+			super( textLabel );
 		}
 		
 		override protected function handlerMouse( ev:MouseEvent ):void {
@@ -62,7 +62,7 @@ package ru.arslanov.flash.gui.buttons {
 		override protected function setupSkinsDefault():void {
 			super.skinUp = ABitmap.fromColor( 0XC0C0C0, 100, 30 ).init();
 			super.skinDown = ABitmap.fromColor( 0X63BE1F, 100, 30 ).init();
-			super.label = new ATextField( "AToggle" );
+			super.label = new ATextField( super.textLabel ).init();
 			
 			skinDownOver = ABitmap.fromColor( 0X9DE767, 100, 30 ).init();
 		}

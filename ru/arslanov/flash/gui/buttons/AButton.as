@@ -28,12 +28,10 @@ package ru.arslanov.flash.gui.buttons {
 		private var _body:ASprite;
 		private var _curSkin:IKillable;
 		
-		public function AButton( skinUp:IKillable = null, skinOver:IKillable = null, skinDown:IKillable = null, label:IKillable = null ) {
-			this.skinUp = skinUp;
-			this.skinOver = skinOver;
-			this.skinDown = skinDown;
-			this.label = label;
-			
+		private var _textLabel:String = "";
+		
+		public function AButton( textLabel:String = "AButton" ) {
+			_textLabel = textLabel;
 			super();
 		}
 		
@@ -67,6 +65,24 @@ package ru.arslanov.flash.gui.buttons {
 			updateState();
 			
 			return this;
+		}
+		
+		override public function kill():void {
+			onOver = null;
+			onOut = null;
+			onPress = null;
+			onRelease = null;
+			
+			super.kill();
+		}
+		
+		public function setSkin( skinUp:IKillable = null, skinOver:IKillable = null, skinDown:IKillable = null, label:IKillable = null ):void {
+			if ( skinUp ) this.skinUp = skinUp;
+			if ( skinOver ) this.skinOver = skinOver;
+			if ( skinDown ) this.skinDown = skinDown;
+			if ( label ) this.label = label;
+			
+			updateState();
 		}
 		
 		public function setupSkinsCustom():void {
@@ -226,6 +242,20 @@ package ru.arslanov.flash.gui.buttons {
 			// override me
 		}
 		
+		public function get textLabel():* {
+			return _textLabel;
+		}
+		
+		public function set textLabel( value:* ):void {
+			if ( !label ) return;
+			var strValue:String = String( value );
+			if ( strValue == _textLabel ) return;
+			_textLabel = strValue;
+			( label as ATextField ).text = _textLabel;
+			
+			updateLabelPosition( _eventType );
+		}
+		
 		public function forceCallHandler( type:String ):void {
 			callHandlers( type );
 		}
@@ -238,17 +268,9 @@ package ru.arslanov.flash.gui.buttons {
 			skinUp = ABitmap.fromColor( 0x8BA86C, 100, 30 ).init();
 			skinOver = ABitmap.fromColor( 0xB8C451, 100, 30 ).init();
 			skinDown = ABitmap.fromColor( 0x9AA538, 100, 30 ).init();
-			label = new ATextField( "AButton" ).init();
+			label = new ATextField( _textLabel ).init();
 		}
 		
-		override public function kill():void {
-			onOver = null;
-			onOut = null;
-			onPress = null;
-			onRelease = null;
-			
-			super.kill();
-		}
 		
 	}
 
