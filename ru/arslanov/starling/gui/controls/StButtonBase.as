@@ -1,6 +1,6 @@
 package ru.arslanov.starling.gui.controls {
-	import ru.arslanov.starling.display.StSpriteBase;
-	import ru.arslanov.starling.interfaces.IStDisplayObjectKillable;
+	import ru.arslanov.starling.display.ASpriteStarling;
+	import ru.arslanov.starling.interfaces.IKillableStarling;
 	import starling.display.DisplayObject;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -10,14 +10,14 @@ package ru.arslanov.starling.gui.controls {
 	 * ...
 	 * @author Artem Arslanov
 	 */
-	public class StButtonBase extends StSpriteBase {
+	public class StButtonBase extends ASpriteStarling {
 		
 		public var onPress:Function;
 		public var onRelease:Function;
 		
 		private var _touchPhase:String = null;
 		private var _isPressed:Boolean = false;
-		private var _body:StSpriteBase;
+		private var _body:ASpriteStarling;
 		private var _skin:StButtonSkinBase;
 		private var _curSkin:DisplayObject;
 		private var _enabled:Boolean;
@@ -32,7 +32,7 @@ package ru.arslanov.starling.gui.controls {
 		override public function init():* {
 			if ( !skin.upSkin ) skin.init();
 			
-			_body = new StSpriteBase().init();
+			_body = new ASpriteStarling().init();
 			addChild( _body );
 			
 			enabled = true;

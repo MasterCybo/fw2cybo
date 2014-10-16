@@ -2,7 +2,7 @@ package ru.arslanov.starling.display {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.getQualifiedClassName;
-	import ru.arslanov.starling.interfaces.IStDisplayObjectKillable;
+	import ru.arslanov.starling.interfaces.IKillableStarling;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.text.TextFieldAutoSize;
@@ -11,7 +11,7 @@ package ru.arslanov.starling.display {
 	 * ...
 	 * @author Artem Arslanov
 	 */
-	public class StTextBase extends TextField implements IStDisplayObjectKillable {
+	public class StTextBase extends TextField implements IKillableStarling {
 		
 		static public var defaultAutoScale:Boolean = false;
 		static public var defaultAutoSize:String = TextFieldAutoSize.BOTH_DIRECTIONS;

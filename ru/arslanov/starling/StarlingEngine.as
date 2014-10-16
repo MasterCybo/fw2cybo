@@ -5,7 +5,7 @@ package ru.arslanov.starling {
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
-	import ru.arslanov.flash.utils.Display;
+	import ru.arslanov.core.utils.Display;
 	import ru.arslanov.core.utils.Log;
 	import starling.core.Starling;
 	import starling.display.Stage;

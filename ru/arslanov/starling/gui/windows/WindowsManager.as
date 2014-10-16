@@ -1,7 +1,7 @@
 package ru.arslanov.starling.gui.windows {
 	import flash.utils.Dictionary;
 	import ru.arslanov.core.layout.Align;
-	import ru.arslanov.flash.utils.Display;
+	import ru.arslanov.core.utils.Display;
 	import ru.arslanov.core.utils.Log;
 	/**
 	 * ...

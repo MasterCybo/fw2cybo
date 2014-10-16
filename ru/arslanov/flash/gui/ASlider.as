@@ -4,7 +4,7 @@ package ru.arslanov.flash.gui
 
 	import ru.arslanov.flash.display.ASprite;
 	import ru.arslanov.flash.gui.events.ASliderEvent;
-	import ru.arslanov.flash.utils.Display;
+	import ru.arslanov.core.utils.Display;
 
 	/**
 	 * Слайдер - графический-компонент, который изменяет значение свойста от 0 до 1 с помощью мышки.

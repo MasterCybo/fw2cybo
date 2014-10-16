@@ -10,6 +10,10 @@
 	 */
 	public class VBox extends ASprite {
 		
+		static public const ALIGN_LEFT:String = "left";
+		static public const ALIGN_CENTER:String = "center";
+		static public const ALIGN_RIGHT:String = "right";
+		
 		private var _space:Number = 0;
 		private var _direction:int;
 		private var _halign:String;
@@ -110,10 +114,10 @@
 				item = getChildAt( i );
 				
 				switch ( _halign ) {
-					case "right":
+					case ALIGN_RIGHT:
 						item.x = maxWidth - item.width;
 					break;
-					case "center":
+					case ALIGN_CENTER:
 						item.x = Math.round( ( maxWidth - item.width ) / 2 );
 					break;
 					default:

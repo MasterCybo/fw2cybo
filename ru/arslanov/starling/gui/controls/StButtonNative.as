@@ -2,7 +2,7 @@ package ru.arslanov.starling.gui.controls {
 	import flash.geom.Point;
 	import flash.utils.getQualifiedClassName;
 	import ru.arslanov.core.utils.Log;
-	import ru.arslanov.starling.interfaces.IStDisplayObjectKillable;
+	import ru.arslanov.starling.interfaces.IKillableStarling;
 	import starling.display.Button;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -11,7 +11,7 @@ package ru.arslanov.starling.gui.controls {
 	 * ...
 	 * @author Artem Arslanov
 	 */
-	public class StButtonNative extends Button implements IStDisplayObjectKillable {
+	public class StButtonNative extends Button implements IKillableStarling {
 		
 		static private var _count:Number = 0;
 		

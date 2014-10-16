@@ -1,7 +1,7 @@
 package ru.arslanov.starling.display {
 	import flash.geom.Point;
 	import flash.utils.getQualifiedClassName;
-	import ru.arslanov.starling.interfaces.IStDisplayObjectKillable;
+	import ru.arslanov.starling.interfaces.IKillableStarling;
 	import starling.display.DisplayObject;
 	import starling.display.MovieClip;
 	import starling.events.Event;
@@ -12,7 +12,7 @@ package ru.arslanov.starling.display {
 	 * Базовый спрайт
 	 * @author Artem Arslanov
 	 */
-	public class StMovieClipBase extends MovieClip implements IStDisplayObjectKillable {
+	public class StMovieClipBase extends MovieClip implements IKillableStarling {
 		
 		static private var _count:Number = 0;
 		

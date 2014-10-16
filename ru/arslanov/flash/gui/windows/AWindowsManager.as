@@ -3,7 +3,7 @@ package ru.arslanov.flash.gui.windows {
 	import flash.events.Event;
 	import flash.utils.Dictionary;
 	import ru.arslanov.core.utils.Log;
-	import ru.arslanov.flash.utils.Display;
+	import ru.arslanov.core.utils.Display;
 	
 	/**
 	 * 

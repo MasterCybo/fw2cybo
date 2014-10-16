@@ -2,7 +2,7 @@ package ru.arslanov.flash.gui.hints {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import ru.arslanov.core.utils.Log;
-	import ru.arslanov.flash.utils.Display;
+	import ru.arslanov.core.utils.Display;
 	/**
 	 * ...
 	 * @author Artem Arslanov

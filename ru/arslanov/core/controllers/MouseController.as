@@ -7,7 +7,7 @@ package ru.arslanov.core.controllers {
 	import flash.geom.Point;
 	import ru.arslanov.core.events.EventManager;
 	import ru.arslanov.core.events.MouseControllerEvent;
-	import ru.arslanov.flash.utils.Display;
+	import ru.arslanov.core.utils.Display;
 	
 	/**
 	 * ...

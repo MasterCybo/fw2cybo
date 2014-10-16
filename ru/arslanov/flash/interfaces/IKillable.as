@@ -1,6 +1,5 @@
 package ru.arslanov.flash.interfaces {
 	import flash.display.DisplayObject;
-	import flash.display.Graphics;
 	import flash.display.IBitmapDrawable;
 	import flash.geom.Rectangle;
 	
@@ -11,8 +10,9 @@ package ru.arslanov.flash.interfaces {
 	public interface IKillable extends IBitmapDrawable {
 		
 		function init():*;
-		
 		function get isInited():Boolean;
+		
+		function kill():void;
 		function get isKilled():Boolean;
 		
 		function get height():Number;
@@ -32,8 +32,6 @@ package ru.arslanov.flash.interfaces {
 		
 		function getBounds( space:DisplayObject ):Rectangle;
 		function getRect( space:DisplayObject ):Rectangle;
-		
-		function kill():void;
 		
 		function get uid():Number;
 		function get uidStr():String;

@@ -1,6 +1,6 @@
 package ru.arslanov.starling.gui.windows {
 	import ru.arslanov.core.layout.Align;
-	import ru.arslanov.starling.display.StSpriteBase;
+	import ru.arslanov.starling.display.ASpriteStarling;
 	import ru.arslanov.starling.gui.controls.StButtonNative;
 	import starling.events.Event;
 	import starling.filters.ColorMatrixFilter;
@@ -10,7 +10,7 @@ package ru.arslanov.starling.gui.windows {
 	 * ...
 	 * @author Artem Arslanov
 	 */
-	public class WindowBase extends StSpriteBase {
+	public class WindowBase extends ASpriteStarling {
 		
 		public var onClose:Function;
 		

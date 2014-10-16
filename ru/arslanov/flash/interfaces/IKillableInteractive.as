@@ -1,6 +1,5 @@
 package ru.arslanov.flash.interfaces {
 	import flash.events.Event;
-
 	import ru.arslanov.core.events.EventManager;
 	
 	/**

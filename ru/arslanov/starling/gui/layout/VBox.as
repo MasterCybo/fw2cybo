@@ -1,13 +1,17 @@
 ﻿package ru.arslanov.starling.gui.layout {
 	import flash.geom.Rectangle;
-	import ru.arslanov.starling.display.StSpriteBase;
+	import ru.arslanov.starling.display.ASpriteStarling;
 	import starling.display.DisplayObject;
 	
 	/**
 	 * Контейнер дисплей-объектов, в котором объекты располагаются вертикально, с регулируемым промежутком
 	 * @author Artem Arslanov
 	 */
-	public class VBox extends StSpriteBase {
+	public class VBox extends ASpriteStarling {
+		
+		static public const ALIGN_LEFT:String = "left";
+		static public const ALIGN_CENTER:String = "center";
+		static public const ALIGN_RIGHT:String = "right";
 		
 		private var _space:Number = 0;
 		private var _direction:int;
@@ -23,7 +27,7 @@
 			super ();
 		}
 		
-		override public function addChild( child:DisplayObject ):DisplayObject {
+		public function addChildAndUpdate( child:DisplayObject ):DisplayObject {
 			var item:DisplayObject = super.addChild( child );
 			
 			update ();
@@ -31,7 +35,7 @@
 			return item;
 		}
 		
-		override public function addChildAt( child:DisplayObject, index:int ):DisplayObject {
+		public function addChildAtAndUpdate( child:DisplayObject, index:int ):DisplayObject {
 			var item:DisplayObject = super.addChildAt( child, index );
 			
 			update ();
@@ -39,20 +43,20 @@
 			return item;
 		}
 		
-		override public function removeChild( child:DisplayObject, dispose:Boolean=false ):DisplayObject {
+		public function removeChildAndUpdate( child:DisplayObject ):DisplayObject {
 			if ( !contains( child ) ) return null;
 			
-			var item:DisplayObject = super.removeChild( child, dispose );
+			var item:DisplayObject = super.removeChild( child );
 			
 			update ();
 			
 			return item;
 		}
 		
-		override public function removeChildAt( index:int, dispose:Boolean=false ):DisplayObject {
+		public function removeChildAtAndUpdate( index:int ):DisplayObject {
 			if ( getChildAt( index ) && !contains( getChildAt( index ) ) ) return null;
 			
-			var item:DisplayObject = super.removeChildAt( index, dispose );
+			var item:DisplayObject = super.removeChildAt( index );
 			
 			update();
 			
@@ -89,31 +93,31 @@
 			update();
 		}
 		
-		protected function update():void {
+		public function update():void {
 			var rect:Rectangle;
 			var item:DisplayObject;
 			var yp:Number = getFirstY();
 			var maxWidth:Number = 0;
+			var len:uint = numChildren;
 			
-			for ( var i:int = 0; i < numChildren; i++ ) {
+			for ( var i:int = 0; i < len; i++ ) {
 				item = getChildAt( i );
 				rect = item.getBounds( item );
 				item.y = yp - rect.y;
 				yp += direction * ( item.height + space );
 				
-				if ( item.width > maxWidth ) maxWidth = item.width;
-				
+				maxWidth = Math.max( item.width, maxWidth );
 			} // for
 			
-			for ( i = 0; i < numChildren; i++ ) {
+			for ( i = 0; i < len; i++ ) {
 				item = getChildAt( i );
-				
+				rect = item.getBounds( item );
 				switch ( _halign ) {
-					case "right":
-						item.x = maxWidth - item.width;
+					case ALIGN_RIGHT:
+						item.x = maxWidth - rect.width;
 					break;
-					case "center":
-						item.x = Math.round( ( maxWidth - item.width ) / 2 );
+					case ALIGN_CENTER:
+						item.x = Math.round( ( maxWidth - rect.width ) / 2 );
 					break;
 					default:
 						item.x = 0;

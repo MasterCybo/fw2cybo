@@ -5,7 +5,7 @@ package ru.arslanov.flash.gui.windows {
 	import ru.arslanov.core.utils.Log;
 	import ru.arslanov.flash.display.ASprite;
 	import ru.arslanov.flash.interfaces.IKillable;
-	import ru.arslanov.flash.utils.Display;
+	import ru.arslanov.core.utils.Display;
 	
 	/**
 	 * ...

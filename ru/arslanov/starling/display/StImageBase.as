@@ -3,7 +3,7 @@ package ru.arslanov.starling.display {
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.utils.getQualifiedClassName;
-	import ru.arslanov.starling.interfaces.IStDisplayObjectKillable;
+	import ru.arslanov.starling.interfaces.IKillableStarling;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -12,7 +12,7 @@ package ru.arslanov.starling.display {
 	 * ...
 	 * @author Artem Arslanov
 	 */
-	public class StImageBase extends Image implements IStDisplayObjectKillable {
+	public class StImageBase extends Image implements IKillableStarling {
 		
 		static private var _count:Number = 0;
 		

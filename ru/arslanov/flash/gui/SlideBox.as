@@ -4,7 +4,7 @@ package ru.arslanov.flash.gui {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import ru.arslanov.flash.display.ASprite;
-	import ru.arslanov.flash.utils.Display;
+	import ru.arslanov.core.utils.Display;
 	
 	/**
 	 * ...
