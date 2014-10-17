@@ -5,7 +5,7 @@ package ru.arslanov.flash.text {
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	import flash.utils.getQualifiedClassName;
-	import ru.arslanov.core.events.EventManager;
+	import ru.arslanov.flash.events.EventManager;
 	import ru.arslanov.flash.interfaces.IKillableInteractive;
 	
 	/**

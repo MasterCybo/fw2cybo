@@ -1,7 +1,7 @@
 package ru.arslanov.flash.display {
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
-	import ru.arslanov.core.events.EventManager;
+	import ru.arslanov.flash.events.EventManager;
 	import ru.arslanov.core.utils.Log;
 	import ru.arslanov.flash.interfaces.IKillableContainer;
 	import ru.arslanov.flash.interfaces.IKillable;

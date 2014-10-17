@@ -8,7 +8,7 @@ package ru.arslanov.flash.display {
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import flash.utils.getQualifiedClassName;
-	import ru.arslanov.core.events.EventManager;
+	import ru.arslanov.flash.events.EventManager;
 	import ru.arslanov.core.utils.Log;
 	import ru.arslanov.flash.interfaces.IKillable;
 	

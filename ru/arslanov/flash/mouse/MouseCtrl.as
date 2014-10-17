@@ -5,7 +5,7 @@ package ru.arslanov.flash.mouse
 {
 	import flash.events.Event;
 
-	import ru.arslanov.core.events.EventManager;
+	import ru.arslanov.flash.events.EventManager;
 
 	import ru.arslanov.flash.interfaces.IKillableInteractive;
 
