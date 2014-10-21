@@ -26,13 +26,13 @@ package ru.arslanov.core.utils {
 		/***************************************************************************
 		Initialization
 		***************************************************************************/
-		static public function init( stage:Stage, root:DisplayObject, scaleMode:String = StageScaleMode.NO_SCALE, align:String = StageAlign.TOP_LEFT ):void {
+		static public function init( root:DisplayObject, scaleMode:String = StageScaleMode.NO_SCALE, align:String = StageAlign.TOP_LEFT ):void {
 			if ( _inited ) {
 				Log.traceWarn( "Display.init() : Display already inited!" );
 				return;
 			}
 			
-			_nativeStage = stage;
+			_nativeStage = root.stage;
 			_nativeRoot = root;
 			
 			_nativeStage.scaleMode = StageScaleMode.NO_SCALE;

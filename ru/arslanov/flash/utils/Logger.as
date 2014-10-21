@@ -7,11 +7,12 @@ package ru.arslanov.flash.utils {
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.text.TextFormat;
-
 	import ru.arslanov.core.controllers.KeyController;
 	import ru.arslanov.core.external.SOManager;
+	import ru.arslanov.core.utils.Display;
 	import ru.arslanov.flash.display.ASprite;
 	import ru.arslanov.flash.text.ATextField;
+
 	
 	/**
 	 * ...
